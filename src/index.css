@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Design system — RVF Odontologia Estética
+ *
+ * Paleta oficial da marca (public/paleta-de-cores.png):
+ *   Grafite    #1E1E1E  ->  0 0% 12%
+ *   Cinza      #727272  ->  0 0% 45%
+ *   Off-white  #F2EFE8  -> 40 25% 93%
+ *
+ * Monocromática e quente, sem cor de destaque. O contraste vem de peso e
+ * espaçamento, não de cor.
+ */
+
+@layer base {
+  :root {
+    /* #727272 — cinza oficial da marca como fundo da página */
+    --background: 0 0% 45%;
+    /* #F2EFE8 — texto off-white sobre o cinza (contraste ~6.4:1) */
+    --foreground: 40 25% 93%;
+
+    /* Cards em off-white, destacando sobre o cinza */
+    --card: 40 25% 93%;
+    --card-foreground: 0 0% 12%;
+
+    --popover: 40 25% 93%;
+    --popover-foreground: 0 0% 12%;
+
+    /* Grafite: botões primários, superfícies escuras */
+    --primary: 0 0% 12%;
+    --primary-foreground: 40 25% 93%;
+
+    --secondary: 0 0% 38%;
+    --secondary-foreground: 40 25% 93%;
+
+    --muted: 0 0% 38%;
+    /**
+     * Texto secundário sobre o fundo cinza: off-white levemente rebaixado,
+     * mantendo contraste confortável. Sobre cards (off-white), usar
+     * text-card-foreground/70 em vez deste token.
+     */
+    --muted-foreground: 40 20% 86%;
+
+    --accent: 0 0% 38%;
+    --accent-foreground: 40 25% 93%;
+
+    --destructive: 0 65% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 56%;
+    --input: 0 0% 56%;
+    --ring: 40 25% 93%;
+
+    --radius: 0.5rem;
+
+    /* Grafite da marca — detalhes sobre superfícies claras */
+    --brand-gray: 0 0% 30%;
+
+    --shadow-soft: 0 4px 16px -4px hsl(0 0% 12% / 0.16);
+    --shadow-card: 0 12px 32px -12px hsl(0 0% 12% / 0.24);
+    --shadow-elevated: 0 24px 56px -20px hsl(0 0% 12% / 0.32);
+
+    --transition-base: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .surface-card {
+    @apply relative bg-card border border-border rounded-lg;
+    box-shadow: var(--shadow-card);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Cormorant Garamond', serif; }
+  .font-body { font-family: 'Inter', sans-serif; }
+  .font-accent { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .text-balance { text-wrap: balance; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
