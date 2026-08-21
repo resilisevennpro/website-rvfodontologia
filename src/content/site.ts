@@ -45,6 +45,8 @@ export const WHATSAPP_MESSAGES = {
   lentes: "Olá! Vim pelo site e gostaria de saber mais sobre lentes em resina.",
   implantes: "Olá! Vim pelo site e gostaria de saber mais sobre implantes.",
   clinicoGeral: "Olá! Vim pelo site e gostaria de agendar uma consulta de clínico geral.",
+  protese: "Olá! Vim pelo site e gostaria de saber mais sobre próteses.",
+  canal: "Olá! Vim pelo site e gostaria de saber mais sobre tratamento de canal.",
 } as const;
 
 export type WhatsAppOrigin = keyof typeof WHATSAPP_MESSAGES;
@@ -64,7 +66,7 @@ export const SEO = {
   home: {
     title: `${CLINIC.name} | ${CLINIC.city} – ${CLINIC.state}`,
     description:
-      "Odontologia estética em Içara. Lentes, implantes e clínico geral com planejamento individualizado. Agende sua avaliação.",
+      "Odontologia em Içara. Lentes, implantes, próteses, tratamento de canal e clínico geral com planejamento individualizado. Agende sua avaliação.",
     path: "/",
   },
   lentes: {

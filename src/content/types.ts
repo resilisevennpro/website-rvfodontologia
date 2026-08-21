@@ -20,6 +20,18 @@ export interface Objection {
   answer: string;
 }
 
+export interface ComparisonRow {
+  label: string;
+  values: [string, string];
+}
+
+export interface Comparison {
+  title: string;
+  intro: string;
+  columns: [string, string];
+  rows: ComparisonRow[];
+}
+
 export interface LandingContent {
   origin: WhatsAppOrigin;
   hero: {
@@ -43,6 +55,7 @@ export interface LandingContent {
     title: string;
     items: Objection[];
   };
+  comparison?: Comparison;
   benefits: {
     title: string;
     items: Benefit[];

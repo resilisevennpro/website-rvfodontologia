@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Instagram, MessageCircle } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { HOME_LINKS } from "@/content/home";
+import { Credits } from "@/components/site/Credits";
 import { CLINIC, LEGAL_SIGNATURE, SEO, SOCIAL, whatsappLink } from "@/content/site";
 import heroImage from "@/assets/hero-equipe.jpg";
 
@@ -29,7 +30,9 @@ const jsonLd = {
 };
 
 const cardClass =
-  "group flex w-full items-center justify-between gap-4 rounded-2xl border border-transparent bg-card px-5 py-5 text-left text-card-foreground shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  /* Grafite da marca: os links são a ação principal da home e ancoram a
+     coluna de texto sobre o off-white. */
+  "group flex w-full items-center justify-between gap-4 rounded-2xl bg-primary px-5 py-3.5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:opacity-95 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 const Index = () => (
   <>
@@ -76,7 +79,7 @@ const Index = () => (
         <hr aria-hidden="true" className="mt-7 border-foreground/15 lg:mt-9" />
 
         <nav aria-label="Principais serviços" className="mt-7 lg:mt-9">
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-2.5">
             {HOME_LINKS.map((link) => {
               const content = (
                 <>
@@ -84,14 +87,14 @@ const Index = () => (
                     <span className="block font-display text-2xl font-semibold leading-tight">
                       {link.label}
                     </span>
-                    <span className="mt-1 block text-sm leading-snug text-card-foreground/65">
+                    <span className="mt-1 block text-sm leading-snug text-primary-foreground/70">
                       {link.hint}
                     </span>
                   </span>
 
                   <ArrowUpRight
                     aria-hidden="true"
-                    className="size-5 shrink-0 text-card-foreground/50 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    className="size-5 shrink-0 text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
                 </>
               );
@@ -123,7 +126,7 @@ const Index = () => (
             href={whatsappLink("home")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground shadow-soft transition-opacity duration-300 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground shadow-soft transition-[transform,box-shadow,opacity] duration-300 ease-out hover:-translate-y-0.5 hover:opacity-95 hover:shadow-card active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <MessageCircle aria-hidden="true" className="size-4" />
             Falar no WhatsApp
@@ -137,6 +140,8 @@ const Index = () => (
         </footer>
       </div>
     </main>
+
+    <Credits />
   </>
 );
 

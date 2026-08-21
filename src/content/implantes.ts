@@ -10,14 +10,14 @@ export const IMPLANTES: LandingContent = {
   origin: "implantes",
 
   hero: {
-    title: "Voltar a mastigar sem pensar nisso",
+    title: "Voltar a mastigar **sem pensar nisso**",
     subtitle:
       "O implante substitui a raiz do dente perdido e devolve função, estabilidade e estética — com planejamento feito a partir da sua estrutura óssea.",
     cta: "Agendar avaliação",
   },
 
   audience: {
-    title: "Quando o implante entra em questão",
+    title: "Quando o implante **entra em questão**",
     items: [
       "Perdeu um ou mais dentes e sente dificuldade para mastigar",
       "Usa prótese removível e gostaria de uma solução fixa",
@@ -28,7 +28,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   explainer: {
-    title: "Uma raiz nova, feita para durar",
+    title: "Uma raiz nova, **feita para durar**",
     paragraphs: [
       "O implante é um pino de titânio instalado no osso, que cumpre o papel da raiz perdida. Sobre ele é fixada a coroa — a parte visível, feita para se integrar aos dentes vizinhos em cor e formato.",
       "O titânio é biocompatível: o osso se integra a ele ao longo da cicatrização, o que dá ao implante a estabilidade necessária para suportar a mastigação no dia a dia.",
@@ -36,7 +36,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   process: {
-    title: "As etapas do tratamento",
+    title: "As **etapas** do tratamento",
     steps: [
       {
         title: "Avaliação e exames de imagem",
@@ -66,7 +66,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   objections: {
-    title: "Perguntas que costumamos ouvir",
+    title: "Perguntas que **costumamos ouvir**",
     items: [
       {
         quote: "Tenho medo da cirurgia.",
@@ -87,7 +87,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   benefits: {
-    title: "Planejamento antes de qualquer procedimento",
+    title: "**Planejamento** antes de qualquer procedimento",
     items: [
       {
         title: "Diagnóstico com imagem",
@@ -109,7 +109,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   faq: {
-    title: "Perguntas frequentes",
+    title: "**Perguntas** frequentes",
     items: [
       {
         question: "Implante dói?",
@@ -145,7 +145,7 @@ export const IMPLANTES: LandingContent = {
   },
 
   finalCta: {
-    title: "Descubra o que é possível no seu caso",
+    title: "Descubra o que é possível **no seu caso**",
     body: "A avaliação com exames de imagem é o que responde com precisão às suas dúvidas.",
     cta: "Falar no WhatsApp",
   },
