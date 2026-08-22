@@ -5,6 +5,11 @@ export interface HomeLink {
   hint: string;
   href: string;
   external: boolean;
+  /**
+   * TEMPORÁRIO (período de teste): o card aparece igual, mas o clique não
+   * navega. Para reverter, basta remover a linha `disabled: true` do item.
+   */
+  disabled?: boolean;
 }
 
 /** Árvore de links da página inicial — destino do bio do Instagram. */
@@ -14,12 +19,14 @@ export const HOME_LINKS: HomeLink[] = [
     hint: "Harmonia e naturalidade em poucas sessões",
     href: "/lentes",
     external: false,
+    disabled: true,
   },
   {
     label: "Implantes",
     hint: "Recupere a função e a segurança de mastigar",
     href: "/implantes",
     external: false,
+    disabled: true,
   },
   {
     // Sem página própria: o contato vai direto ao WhatsApp, com origem própria

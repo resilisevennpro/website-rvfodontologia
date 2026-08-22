@@ -101,7 +101,13 @@ const Index = () => (
 
               return (
                 <li key={link.label}>
-                  {link.external ? (
+                  {link.disabled ? (
+                    // Período de teste: mesmo card, sem destino. Fora da ordem
+                    // de tabulação para não prometer um clique que não acontece.
+                    <span className={cardClass} aria-disabled="true">
+                      {content}
+                    </span>
+                  ) : link.external ? (
                     <a
                       href={link.href}
                       target="_blank"
