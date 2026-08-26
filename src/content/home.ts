@@ -15,7 +15,7 @@ export interface HomeLink {
 /** Árvore de links da página inicial — destino do bio do Instagram. */
 export const HOME_LINKS: HomeLink[] = [
   {
-    label: "Lentes em Resina",
+    label: "Lentes e Facetas",
     hint: "Harmonia e naturalidade em poucas sessões",
     href: "/lentes",
     external: false,
@@ -26,7 +26,6 @@ export const HOME_LINKS: HomeLink[] = [
     hint: "Recupere a função e a segurança de mastigar",
     href: "/implantes",
     external: false,
-    disabled: true,
   },
   {
     // Sem página própria: o contato vai direto ao WhatsApp, com origem própria

@@ -78,6 +78,25 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
                 key={link.to}
                 to={link.to}
                 aria-current={active ? "page" : undefined}
+                /*
+                 * O link da própria página não navega para lugar nenhum: em vez
+                 * de ficar inerte, sobe para o topo. É o que se espera ao clicar
+                 * no nome da página numa landing longa.
+                 */
+                onClick={
+                  active
+                    ? (event) => {
+                        event.preventDefault();
+                        window.scrollTo({
+                          top: 0,
+                          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+                            .matches
+                            ? "auto"
+                            : "smooth",
+                        });
+                      }
+                    : undefined
+                }
                 /* A cor acompanha o fundo da barra: off-white quando escurecida, grafite no topo. */
                 className={`whitespace-nowrap rounded-md px-2 py-2 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-3 ${
                   scrolled

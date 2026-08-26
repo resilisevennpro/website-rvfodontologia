@@ -58,8 +58,8 @@ const jsonLd = {
 // do CRO antes de publicar.
 const { implantodontia, protese } = CLINIC.professionals;
 const TEAM_COPY = [
-  `O tratamento é conduzido por dois profissionais, cada um na sua especialidade. A cirurgia fica com o ${implantodontia.name}, **cirurgião-dentista especialista em Implantodontia**, que planeja e instala o implante.`,
-  `A coroa, a parte visível que vai sobre o implante, é feita pelo ${protese.name}, **especialista em Prótese Dentária**. É ele quem cuida do encaixe, da forma e da cor para que o dente se integre aos vizinhos.`,
+  `O tratamento é conduzido por dois profissionais, cada um na sua especialidade. A cirurgia fica com o **${implantodontia.name}**, **cirurgião-dentista especialista em Implantodontia**, que planeja e instala o implante.`,
+  `A coroa, a parte visível que vai sobre o implante, é feita pelo **${protese.name}**, **especialista em Prótese Dentária**. É ele quem cuida do encaixe, da forma e da cor para que o dente se integre aos vizinhos.`,
   "Implante é cirurgia, e você tem o direito de saber quem opera. Os dois acompanham o seu caso dentro da clínica, do primeiro exame à manutenção, sem encaminhamento para fora.",
 ];
 

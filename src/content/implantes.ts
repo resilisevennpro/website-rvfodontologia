@@ -36,9 +36,9 @@ export const IMPLANTES: LandingContent = {
   explainer: {
     title: "Uma raiz nova, **feita para durar**",
     paragraphs: [
-      "O implante é um pino de titânio instalado no osso, que cumpre o papel da raiz perdida. Sobre ele é fixada a coroa, a parte visível, feita para se integrar aos dentes vizinhos em cor e formato.",
+      "**O implante** é um pino de titânio instalado no osso, que cumpre o papel da raiz perdida. Sobre ele é fixada a coroa, a parte visível, feita para se integrar aos dentes vizinhos em cor e formato.",
       "O titânio é biocompatível: o osso se integra a ele ao longo da cicatrização, o que dá ao implante a estabilidade necessária para suportar a mastigação no dia a dia.",
-      "O mesmo princípio vale de um dente a uma arcada inteira. Quando falta um dente só, o implante recebe uma coroa. Quando faltam muitos, poucos implantes bem posicionados sustentam uma prótese fixa, que não sai da boca para higienizar. O que muda é a quantidade e o planejamento, não a lógica do tratamento.",
+      "O mesmo princípio vale de um dente a uma arcada inteira. Quando falta um dente só, **o implante recebe uma coroa.** Quando faltam muitos, **poucos implantes bem posicionados sustentam uma prótese fixa,** que não sai da boca para higienizar. O que muda é a quantidade e o planejamento, não a lógica do tratamento.",
     ],
   },
 
@@ -47,7 +47,7 @@ export const IMPLANTES: LandingContent = {
     steps: [
       {
         title: "Avaliação e exames de imagem",
-        body: "Na avaliação, gratuita, analisamos a saúde bucal e indicamos os exames necessários, contratados à parte. Eles mostram volume e densidade do osso, o que define se o implante pode ser instalado de imediato.",
+        body: "Na avaliação gratuita, analisamos a saúde bucal e indicamos os exames necessários, contratados à parte. Eles mostram volume e densidade do osso, o que define se o implante pode ser instalado de imediato.",
       },
       {
         title: "Planejamento",

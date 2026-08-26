@@ -246,9 +246,10 @@ export function Explainer({
         <div className="contents lg:block">
           <SectionTitle className="order-1 lg:mb-6">{content.explainer.title}</SectionTitle>
           <div className="order-3 space-y-4 lg:order-none">
+            {/* `**trecho**` na copy vira ênfase em grafite, como nos títulos. */}
             {content.explainer.paragraphs.map((paragraph) => (
               <p key={paragraph} className="text-base leading-relaxed text-muted-foreground">
-                {paragraph}
+                {highlight(paragraph, "font-semibold text-foreground")}
               </p>
             ))}
           </div>
@@ -309,7 +310,7 @@ export function Process({
               <span className="font-display text-3xl font-semibold leading-none text-foreground/85 transition-colors duration-300 group-hover:text-foreground lg:text-4xl">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-xl font-semibold leading-tight lg:text-2xl">
+              <h3 className="font-display text-xl font-bold leading-tight lg:text-2xl">
                 {step.title}
               </h3>
             </div>
@@ -475,8 +476,8 @@ function BenefitsCarousel({
           ))}
         </CarouselContent>
 
-        {/* Contador e setas: âncora de navegação sob o card. */}
-        <div className="mt-5 flex items-center gap-4">
+        {/* Contador e setas: âncora de navegação centralizada sob o card. */}
+        <div className="mt-5 flex items-center justify-center gap-4">
           {/* A foto de fundo só existe a partir do `lg`: no mobile o fundo é o
               off-white, então o contador e as setas só invertem para claro no
               desktop, senão sumiriam. */}
@@ -542,7 +543,7 @@ export function Benefits({
             />
             {/* Gradiente em vez de véu chapado: grafite quase opaco sob os
                 cards, abrindo para a direita para a clínica aparecer. */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/65 via-55% to-primary/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/75 via-primary/45 via-55% to-primary/10" />
           </div>
         )
       }
@@ -550,14 +551,19 @@ export function Benefits({
          altura extra é o que dá presença à imagem da clínica. */
       className={image ? "lg:py-28" : ""}
     >
+      {/* No mobile a foto é bloco próprio. O recorte é aproximado para os
+          rostos ganharem presença no quadro estreito; o `overflow-hidden` do
+          container corta o excedente da escala. */}
       {image && (
-        <img
-          src={image}
-          alt={alt ?? ""}
-          aria-hidden={alt ? undefined : "true"}
-          className="mb-10 block aspect-[4/3] w-full rounded-2xl object-cover shadow-card lg:hidden"
-          loading="lazy"
-        />
+        <div className="mb-10 overflow-hidden rounded-2xl shadow-card lg:hidden">
+          <img
+            src={image}
+            alt={alt ?? ""}
+            aria-hidden={alt ? undefined : "true"}
+            className="block aspect-[4/3] w-full scale-125 object-cover"
+            loading="lazy"
+          />
+        </div>
       )}
       <SectionTitle
         className={image ? "lg:text-primary-foreground" : ""}
@@ -951,7 +957,7 @@ export function BeforeAfter({
         }
       >
         {cases.map((item) => (
-          <figure key={item.label} className={`h-full overflow-hidden p-4 ${CARD}`}>
+          <figure key={item.label} className={`h-full p-4 ${CARD}`}>
             {/* Antes e depois lado a lado: a comparação só funciona se as duas
                 imagens tiverem o mesmo enquadramento e a mesma altura. */}
             <div className="grid grid-cols-2 gap-2">
@@ -993,7 +999,7 @@ export function BeforeAfter({
 
       {/* Ressalva ética do CFO: precisa ser legível, não miudinho de rodapé, e
           fica colada às imagens, antes do CTA. */}
-      <p className="mt-6 font-accent text-base leading-relaxed text-muted-foreground lg:text-lg">
+      <p className="mt-6 font-accent text-lg font-medium leading-relaxed text-muted-foreground lg:text-xl">
         {disclaimer}
       </p>
 

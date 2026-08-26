@@ -53,8 +53,20 @@ export const SOCIAL = {
   geo: { lat: -28.7136529, lng: -49.300186 },
 } as const;
 
-/** TODO: número real do WhatsApp da clínica (formato: 55 + DDD + número). */
-export const WHATSAPP_NUMBER = "5548000000000";
+/**
+ * Números de WhatsApp por destino.
+ *
+ * A secretaria atende o contato geral da home e os serviços sem landing
+ * própria (clínico geral, canal e próteses). As landings de tratamento têm
+ * número próprio, para a clínica saber por qual campanha a pessoa chegou.
+ */
+// TODO: número real do WhatsApp das landings (formato: 55 + DDD + número).
+const WHATSAPP_CLINICA = "5548000000000";
+/** WhatsApp da secretaria: (48) 99986-3951. */
+const WHATSAPP_SECRETARIA = "5548999863951";
+
+/** Compatibilidade: número padrão usado por quem importa direto. */
+export const WHATSAPP_NUMBER = WHATSAPP_CLINICA;
 
 /** Mensagem pré-preenchida conforme a origem do clique. */
 export const WHATSAPP_MESSAGES = {
@@ -68,9 +80,20 @@ export const WHATSAPP_MESSAGES = {
 
 export type WhatsAppOrigin = keyof typeof WHATSAPP_MESSAGES;
 
+/** Origens atendidas pela secretaria. As demais vão para o número da clínica. */
+const SECRETARIA_ORIGINS: readonly WhatsAppOrigin[] = [
+  "home",
+  "clinicoGeral",
+  "canal",
+  "protese",
+];
+
 export function whatsappLink(origin: WhatsAppOrigin = "home"): string {
   const text = encodeURIComponent(WHATSAPP_MESSAGES[origin]);
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+  const number = SECRETARIA_ORIGINS.includes(origin)
+    ? WHATSAPP_SECRETARIA
+    : WHATSAPP_CLINICA;
+  return `https://wa.me/${number}?text=${text}`;
 }
 
 /**
