@@ -51,10 +51,12 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
           : "border-foreground/10 bg-background"
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-5xl items-center justify-between gap-6 px-5 lg:px-8">
+      {/* `gap` menor no mobile: com o rótulo do botão oculto, o respiro de 6
+          somado ao logo e aos links estourava a largura da viewport. */}
+      <div className="mx-auto flex h-20 max-w-5xl items-center justify-between gap-3 px-5 sm:gap-6 lg:px-8">
         <Link
           to="/"
-          aria-label={`${CLINIC.name} — página inicial`}
+          aria-label={`${CLINIC.name}, página inicial`}
           className="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {/* Duas versões do logo: a barra alterna entre fundo claro e grafite. */}
@@ -65,7 +67,10 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
           />
         </Link>
 
-        <nav aria-label="Navegação principal" className="flex items-center gap-1 sm:gap-2">
+        <nav
+          aria-label="Navegação principal"
+          className="flex min-w-0 items-center gap-0.5 sm:gap-2"
+        >
           {linksFor(pathname).map((link) => {
             const active = pathname === link.to;
             return (
@@ -74,7 +79,7 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
                 to={link.to}
                 aria-current={active ? "page" : undefined}
                 /* A cor acompanha o fundo da barra: off-white quando escurecida, grafite no topo. */
-                className={`rounded-md px-3 py-2 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                className={`whitespace-nowrap rounded-md px-2 py-2 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-3 ${
                   scrolled
                     ? `focus-visible:ring-offset-primary ${
                         active
@@ -95,8 +100,12 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
             href={whatsappLink(origin)}
             target="_blank"
             rel="noopener noreferrer"
-            /* Sobre a barra escurecida o botão inverte, senão grafite sobre grafite. */
-            className={`ml-1 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-300 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+            aria-label={`Agendar pelo WhatsApp com a ${CLINIC.name}`}
+            /* Sobre a barra escurecida o botão inverte, senão grafite sobre grafite.
+               No mobile o rótulo some, então o botão vira circular e perde o
+               padding lateral de botão com texto: era ele que empurrava a
+               barra para fora da viewport. */
+            className={`ml-0.5 inline-flex shrink-0 items-center justify-center gap-2 rounded-full p-2.5 text-sm font-medium transition-colors duration-300 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:ml-1 sm:px-4 sm:py-2.5 ${
               scrolled
                 ? "bg-background text-foreground focus-visible:ring-offset-primary"
                 : "bg-primary text-primary-foreground focus-visible:ring-offset-background"

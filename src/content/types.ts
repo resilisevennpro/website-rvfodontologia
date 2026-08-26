@@ -25,6 +25,16 @@ export interface ComparisonRow {
   values: [string, string];
 }
 
+/**
+ * Bloco de transparência de orçamento. O CFO proíbe divulgar preço, então
+ * aqui se descreve o método (plano fechado, sem surpresa), nunca valores.
+ */
+export interface Investment {
+  title: string;
+  intro: string;
+  items: Benefit[];
+}
+
 export interface Comparison {
   title: string;
   intro: string;
@@ -55,7 +65,16 @@ export interface LandingContent {
     title: string;
     items: Objection[];
   };
+  investment?: Investment;
   comparison?: Comparison;
+  /** Antes e depois. Só com autorização escrita da paciente. */
+  cases?: {
+    label: string;
+    shortLabel?: string;
+    aspect?: string;
+    before?: string;
+    after?: string;
+  }[];
   benefits: {
     title: string;
     items: Benefit[];

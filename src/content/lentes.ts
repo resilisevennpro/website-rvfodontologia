@@ -12,7 +12,7 @@ export const LENTES: LandingContent = {
   hero: {
     title: "Um sorriso que continua sendo **o seu**",
     subtitle:
-      "Lentes em resina desenhadas a partir das proporções do seu rosto — para corrigir forma, cor e alinhamento sem que o resultado pareça artificial.",
+      "Lentes em resina desenhadas a partir das proporções do seu rosto, para corrigir forma, cor e alinhamento sem que o resultado pareça artificial.",
     cta: "Agendar avaliação",
   },
 
@@ -23,7 +23,7 @@ export const LENTES: LandingContent = {
       "Tem espaços entre os dentes que incomodam ao sorrir",
       "Convive com manchas ou escurecimento que o clareamento não resolveu",
       "Percebe desgaste nas bordas dos dentes da frente",
-      "Evita sorrir em fotos — e gostaria de parar de pensar nisso",
+      "Evita sorrir em fotos e gostaria de parar de pensar nisso",
     ],
   },
 
@@ -31,7 +31,7 @@ export const LENTES: LandingContent = {
     title: "Uma técnica **conservadora**",
     paragraphs: [
       "As lentes em resina são finas camadas aplicadas diretamente sobre o dente, moldadas e polidas em consultório. Como a aplicação é feita sobre a estrutura existente, na maior parte dos casos preserva-se o dente natural, com pouco ou nenhum desgaste.",
-      "O material é trabalhado em camadas, o que permite reproduzir a translucidez e a variação de cor de um dente natural — a diferença entre um sorriso restaurado e um sorriso que aparenta ser artificial.",
+      "O material é trabalhado em camadas, o que permite reproduzir a translucidez e a variação de cor de um dente natural, que é a diferença entre um sorriso restaurado e um sorriso que aparenta ser artificial.",
     ],
   },
 
@@ -40,7 +40,7 @@ export const LENTES: LandingContent = {
     steps: [
       {
         title: "Avaliação",
-        body: "Conversamos sobre o que te incomoda e examinamos a saúde bucal. Nem todo caso é indicado para lentes — e, quando não é, dizemos com clareza qual seria o melhor caminho.",
+        body: "Conversamos sobre o que te incomoda e examinamos a saúde bucal. Nem todo caso é indicado para lentes e, quando não é, dizemos com clareza qual seria o melhor caminho.",
       },
       {
         title: "Planejamento",
@@ -101,7 +101,7 @@ export const LENTES: LandingContent = {
       {
         question: "Vocês trabalham com lentes de porcelana também?",
         answer:
-          "Sim. Trabalhamos com lentes em resina e em porcelana. Cada material atende melhor a um tipo de caso, e a indicação sai da avaliação — não é uma escolha feita antes de examinar o seu sorriso.",
+          "Sim. Trabalhamos com lentes em resina e em porcelana. Cada material atende melhor a um tipo de caso, e a indicação sai da avaliação, não de uma escolha feita antes de examinar o seu sorriso.",
       },
       {
         question: "Qual a diferença entre lente em resina e lente de porcelana?",
@@ -126,7 +126,7 @@ export const LENTES: LandingContent = {
       {
         question: "Como faço a manutenção?",
         answer:
-          "Higiene normal — escova, fio dental e as orientações que passamos na consulta. Além disso, retornos periódicos para polimento e avaliação. É a manutenção que preserva o brilho e a longevidade do trabalho.",
+          "Higiene normal: escova, fio dental e as orientações que passamos na consulta. Além disso, retornos periódicos para polimento e avaliação. É a manutenção que preserva o brilho e a longevidade do trabalho.",
       },
       {
         question: "Posso comer e beber normalmente?",
@@ -152,7 +152,7 @@ export const LENTES: LandingContent = {
       {
         quote: "Tenho medo de ficar com cara de dente falso.",
         answer:
-          "Esse receio quase sempre vem de trabalhos com proporção e cor mal planejadas. O desenho parte das proporções do seu rosto, e a resina é aplicada em camadas para reproduzir translucidez — é o que separa um resultado natural de um artificial.",
+          "Esse receio quase sempre vem de trabalhos com proporção e cor mal planejadas. O desenho parte das proporções do seu rosto, e a resina é aplicada em camadas para reproduzir translucidez, e é isso que separa um resultado natural de um artificial.",
       },
       {
         quote: "Ouvi dizer que estraga o dente.",
@@ -170,7 +170,7 @@ export const LENTES: LandingContent = {
   comparison: {
     title: "**Resina** ou **porcelana**?",
     intro:
-      "Trabalhamos com os dois materiais. Cada um atende melhor a um tipo de caso — a indicação sai da avaliação, não de uma preferência definida de antemão.",
+      "Trabalhamos com os dois materiais. Cada um atende melhor a um tipo de caso, e a indicação sai da avaliação, não de uma preferência definida de antemão.",
     columns: ["Lente em resina", "Lente em porcelana"],
     rows: [
       { label: "Execução", values: ["Direto em consultório", "Confeccionada em laboratório"] },
@@ -184,11 +184,13 @@ export const LENTES: LandingContent = {
 
   finalCta: {
     title: "Vamos conversar sobre **o seu caso**?",
-    body: "A avaliação é o momento de entender o que é possível — sem compromisso e sem pressa.",
+    body: "A avaliação é o momento de entender o que é possível, sem compromisso e sem pressa.",
     cta: "Falar no WhatsApp",
   },
 };
 
-/** Exigência ética: deve acompanhar qualquer exibição de antes e depois. */
-export const RESULTS_DISCLAIMER =
-  "Cada caso é único. Os resultados variam conforme a condição inicial de cada paciente.";
+/**
+ * A ressalva vale para o site inteiro, então mora em `site.ts`. Reexportada
+ * aqui para não quebrar quem já a importava desta landing.
+ */
+export { RESULTS_DISCLAIMER } from "./site";

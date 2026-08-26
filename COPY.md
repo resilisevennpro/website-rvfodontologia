@@ -13,14 +13,14 @@
 | Dado | Valor |
 |---|---|
 | Cidade | **Içara – SC** |
-| Responsável técnico | **Dr. Vinicius Selau — CRO/SC 20.491** |
+| Responsável técnico | **Dr. Vinicius Rodrigues — CRO/SC 20.491** |
 | Registro da clínica | **EPAO 5107** |
 | Tagline oficial | *"Melhoramos a vida de nossos pacientes através do sorriso!"* |
 
 **Assinatura do rodapé** (atende à exigência do CFO):
 
 > RVF Odontologia Estética · Içara – SC
-> Responsável Técnico: Dr. Vinicius Selau — CRO/SC 20.491 · EPAO 5107
+> Responsável Técnico: Dr. Vinicius Rodrigues — CRO/SC 20.491 · EPAO 5107
 
 ---
 
@@ -75,7 +75,7 @@ equipe ainda não esteja definida — evita retrabalho se ela entrar depois.
 
 > Instagram · WhatsApp
 > RVF Odontologia Estética · Içara – SC
-> RT: Dr. Vinicius Selau — CRO/SC 20.491 · EPAO 5107
+> RT: Dr. Vinicius Rodrigues — CRO/SC 20.491 · EPAO 5107
 
 ---
 

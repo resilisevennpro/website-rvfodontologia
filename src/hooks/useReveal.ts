@@ -28,7 +28,13 @@ export function useReveal() {
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+      /*
+       * `threshold: 0` com margem negativa: basta o topo do bloco entrar na
+       * viewport. Com 0.12, blocos altos (uma grade de cards numa seção com
+       * foto de fundo) só revelavam quando 12% deles aparecia, e podiam ficar
+       * invisíveis em telas menores.
+       */
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
     );
 
     els.forEach((el) => obs.observe(el));

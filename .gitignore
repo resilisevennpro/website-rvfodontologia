@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Arquivos de sistema do Windows
+desktop.ini
+Thumbs.db

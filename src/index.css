@@ -94,6 +94,9 @@
   }
   body {
     @apply bg-background text-foreground font-body antialiased;
+    /* Rede de segurança: um elemento que estoure a largura rola dentro do
+       próprio container, sem arrastar a página para o lado no mobile. */
+    overflow-x: hidden;
   }
   h1, h2, h3, h4 {
     @apply font-display;
@@ -142,15 +145,25 @@
 }
 
 @layer components {
-  /** Zoom lento na imagem ao passar o mouse pelo container. */
+  /**
+   * Zoom lento na imagem ao passar o mouse pelo container.
+   *
+   * `--zoom` e `--shift` ajustam o recorte de forma estática: aproximam e
+   * deslocam a imagem dentro do card (shift positivo = para a direita). O
+   * hover compõe com elas, afastando um pouco a imagem.
+   *
+   * O estado de repouso tem `--zoom` mínimo de 1.04, para o afastamento do
+   * hover nunca encolher a imagem abaixo do quadro e expor o fundo do card.
+   */
   .zoom-hover {
     overflow: hidden;
   }
   .zoom-hover img {
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateX(var(--shift, 0)) scale(max(var(--zoom, 1), 1.04));
   }
   .zoom-hover:hover img {
-    transform: scale(1.04);
+    transform: translateX(var(--shift, 0)) scale(calc(max(var(--zoom, 1), 1.04) * 0.96));
   }
 }
 
@@ -176,7 +189,8 @@
   .zoom-hover img {
     transition: none;
   }
+  /* Sem animação no hover, mas preservando a aproximação estática do recorte. */
   .zoom-hover:hover img {
-    transform: none;
+    transform: translateX(var(--shift, 0)) scale(max(var(--zoom, 1), 1.04));
   }
 }

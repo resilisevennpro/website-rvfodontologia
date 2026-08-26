@@ -14,9 +14,26 @@ export const CLINIC = {
   domain: "https://rvfodontologia.com.br",
 
   /** Exigência do Código de Ética Odontológica: RT e registro visíveis no site. */
-  responsibleTechnician: "Dr. Vinicius Selau",
+  responsibleTechnician: "Dr. Vinicius Rodrigues",
   cro: "CRO/SC 20.491",
   epao: "EPAO 5107",
+
+  /**
+   * Profissionais citados nominalmente na copy. Só entram aqui com registro no
+   * CRO: o CFO permite citar especialidade apenas quando registrada.
+   */
+  professionals: {
+    implantodontia: {
+      name: "Dr. Vinicius Rodrigues",
+      specialty: "Especialista em Implantodontia",
+      cro: "CRO/SC 20.491",
+    },
+    protese: {
+      name: "Dr. Ricardo Rodrigues",
+      specialty: "Especialista em Prótese Dentária",
+      cro: "CRO/SC 7444",
+    },
+  },
 
   // TODO: endereço completo (rua, número, bairro, CEP)
   address: {
@@ -56,10 +73,18 @@ export function whatsappLink(origin: WhatsAppOrigin = "home"): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
 }
 
+/**
+ * Exigência ética do CFO: deve acompanhar qualquer exibição de antes e depois,
+ * em qualquer página. Vive aqui, e não na copy de uma landing, porque a regra
+ * é do site inteiro.
+ */
+export const RESULTS_DISCLAIMER =
+  "Cada caso é único. Os resultados variam conforme a condição inicial de cada paciente.";
+
 /** Assinatura legal exibida no rodapé de todas as páginas. */
 export const LEGAL_SIGNATURE = [
   `${CLINIC.name} · ${CLINIC.city} – ${CLINIC.state}`,
-  `RT: ${CLINIC.responsibleTechnician} — ${CLINIC.cro} · ${CLINIC.epao}`,
+  `RT: ${CLINIC.responsibleTechnician} · ${CLINIC.cro} · ${CLINIC.epao}`,
 ] as const;
 
 export const SEO = {
