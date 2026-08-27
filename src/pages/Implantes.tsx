@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/useReveal";
+import { useHashScroll } from "@/hooks/useHashScroll";
 import { Seo } from "@/components/Seo";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -80,6 +81,7 @@ const TEAM_COPY = [
  */
 const Implantes = () => {
   useReveal();
+  useHashScroll();
 
   return (
   <>
@@ -144,7 +146,7 @@ const Implantes = () => {
         secondary={{ label: "Como funciona o tratamento", targetId: "como-funciona" }}
       />
       */}
-      <Audience content={IMPLANTES} />
+      <Audience content={IMPLANTES} id="para-quem" />
       <Explainer
         content={IMPLANTES}
         image={sorrisoPhoto}
@@ -177,6 +179,7 @@ const Implantes = () => {
         cta={{ label: "Tirar uma dúvida no WhatsApp" }}
       />
       <Team
+        id="equipe"
         image={equipePhoto}
         alt={`${protese.name} e ${implantodontia.name}, responsáveis pelos casos de implante na ${CLINIC.name}`}
         title={"Quem vai **planejar e operar**"}
@@ -213,14 +216,17 @@ const Implantes = () => {
         source={TESTIMONIALS_SOURCE}
         intro="Avaliações públicas de quem já foi atendido na clínica."
       />
-      <Investment content={IMPLANTES} />
+      <Investment content={IMPLANTES} id="investimento" />
       <Benefits
         content={IMPLANTES}
+        id="a-clinica"
         image={clinicaPhoto}
         alt={`Equipe da ${CLINIC.name} na recepção da clínica em ${CLINIC.city}`}
       />
       <CtaButton origin={IMPLANTES.origin} label="Pedir a avaliação do meu caso" />
-      <Faq content={IMPLANTES} />
+      {/* `#faq` é o alvo declarado no JSON-LD acima: o rich result de FAQ no
+          Google leva direto para esta seção. */}
+      <Faq content={IMPLANTES} id="faq" />
       <FinalCta
         content={IMPLANTES}
         image={protesePhoto}

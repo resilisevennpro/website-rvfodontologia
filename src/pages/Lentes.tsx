@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/useReveal";
+import { useHashScroll } from "@/hooks/useHashScroll";
 import { Seo } from "@/components/Seo";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -49,6 +50,7 @@ const jsonLd = {
  */
 const Lentes = () => {
   useReveal();
+  useHashScroll();
 
   return (
   <>

@@ -184,9 +184,15 @@ export function Hero({
   );
 }
 
-export function Audience({ content }: { content: LandingContent }) {
+export function Audience({
+  content,
+  id,
+}: {
+  content: LandingContent;
+  id?: string;
+}) {
   return (
-    <Section>
+    <Section id={id}>
       <SectionTitle>{content.audience.title}</SectionTitle>
       <ul className="reveal-stagger mt-8 grid gap-3 sm:grid-cols-2">
         {content.audience.items.map((item) => (
@@ -359,12 +365,18 @@ export function Objections({ content }: { content: LandingContent }) {
  * credibilidade com quem tem valor como objeção nº 1. O CFO proíbe divulgar
  * valores, então o bloco descreve o método, nunca números.
  */
-export function Investment({ content }: { content: LandingContent }) {
+export function Investment({
+  content,
+  id,
+}: {
+  content: LandingContent;
+  id?: string;
+}) {
   if (!content.investment) return null;
   const { title, intro, items } = content.investment;
 
   return (
-    <Section className="bg-card">
+    <Section id={id} className="bg-card">
       <div className="max-w-3xl">
         <SectionTitle>{title}</SectionTitle>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{intro}</p>
@@ -518,11 +530,13 @@ export function Benefits({
   content,
   image,
   alt,
+  id,
 }: {
   content: LandingContent;
   /** Foto de ambiente. Fundo da seção no desktop, bloco próprio no mobile. */
   image?: string;
   alt?: string;
+  id?: string;
 }) {
   return (
     /* Com foto, a seção vira o contexto dos cards: no desktop ela é fundo, com
@@ -530,6 +544,7 @@ export function Benefits({
        no mobile entra como bloco antes do título, onde texto sobre foto em
        tela estreita ficaria ilegível. */
     <Section
+      id={id}
       backdrop={
         image && (
           <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
@@ -581,9 +596,9 @@ export function Benefits({
   );
 }
 
-export function Faq({ content }: { content: LandingContent }) {
+export function Faq({ content, id }: { content: LandingContent; id?: string }) {
   return (
-    <Section>
+    <Section id={id}>
       <div className="mx-auto max-w-3xl">
         <SectionTitle className="text-center">{content.faq.title}</SectionTitle>
         {/* Painel único: agrupa as perguntas em vez de deixá-las soltas na página. */}
@@ -810,6 +825,7 @@ export function Team({
   alt,
   title = "Quem vai cuidar do **seu sorriso**",
   paragraphs,
+  id,
   /**
    * Enquadramento da foto. O padrão quadrado serve à foto de equipe; retratos
    * em orientação paisagem precisam de `object-position` para não cortar o
@@ -837,6 +853,7 @@ export function Team({
   fillImage?: boolean;
   /** Registros exibidos como selo. Só entram profissionais com CRO. */
   credentials?: { role: string; name: string; cro: string }[];
+  id?: string;
 }) {
   const body = paragraphs ?? [
     `A ${CLINIC.name} reúne uma equipe de cirurgiões-dentistas em ${CLINIC.city}, com áreas de atuação complementares. Na prática, isso significa que o seu caso é discutido por mais de um profissional quando envolve mais de uma especialidade.`,
@@ -844,7 +861,7 @@ export function Team({
   ];
 
   return (
-    <Section>
+    <Section id={id}>
       <div
         className={`grid gap-10 lg:grid-cols-2 lg:gap-14 ${
           fillImage ? "items-stretch" : "items-center"
