@@ -27,6 +27,7 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Victor Branco",
     quote:
       "Fiz minhas facetas nessa clínica e estou extremamente satisfeito com o resultado! Desde o atendimento até a finalização do tratamento, tudo foi impecável. Equipe profissional, ambiente acolhedor e um trabalho de altíssima qualidade. Recomendo de olhos fechados!",
+    treatment: "lentes",
   },
   {
     name: "Paula S",
@@ -66,3 +67,19 @@ export const TESTIMONIALS: Testimonial[] = [
       "Minha experiência na clínica foi excelente! Os profissionais demonstram alto nível técnico e muito cuidado em cada atendimento, transmitindo segurança e confiança. O ambiente é limpo, moderno e acolhedor, o que torna as consultas muito mais confortáveis. O atendimento, desde a recepção até os procedimentos, é atencioso, cordial e eficiente. Recomendo a todos que buscam qualidade e profissionalismo.",
   },
 ];
+
+/**
+ * Depoimentos de uma landing, com os relatos do próprio tratamento à frente.
+ *
+ * Nenhum é descartado: os que falam da clínica em geral (atendimento, ambiente)
+ * seguem valendo em qualquer página, e entram logo depois. Enquanto houver
+ * poucos relatos por tratamento, é isso que evita uma landing com dois cards.
+ */
+export function testimonialsFor(treatment: Testimonial["treatment"]) {
+  if (!treatment) return TESTIMONIALS;
+
+  return [
+    ...TESTIMONIALS.filter((item) => item.treatment === treatment),
+    ...TESTIMONIALS.filter((item) => item.treatment !== treatment),
+  ];
+}

@@ -71,7 +71,9 @@ export const WHATSAPP_NUMBER = WHATSAPP_CLINICA;
 /** Mensagem pré-preenchida conforme a origem do clique. */
 export const WHATSAPP_MESSAGES = {
   home: "Olá! Vim pelo site e gostaria de mais informações.",
-  lentes: "Olá! Vim pelo site e gostaria de saber mais sobre lentes em resina.",
+  /* Sem citar o material: a landing trabalha resina e porcelana, e fixar um
+     deles aqui estreitaria a conversa antes da avaliação. */
+  lentes: "Olá! Vim pelo site e gostaria de saber mais sobre lentes.",
   implantes: "Olá! Vim pelo site e gostaria de saber mais sobre implantes.",
   clinicoGeral: "Olá! Vim pelo site e gostaria de agendar uma consulta de clínico geral.",
   protese: "Olá! Vim pelo site e gostaria de saber mais sobre próteses.",

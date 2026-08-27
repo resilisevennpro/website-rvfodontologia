@@ -30,6 +30,12 @@ export interface Testimonial {
   quote: string;
   /** Citação encurtada em relação ao original. Ver comentário no item. */
   edited?: boolean;
+  /**
+   * Tratamento citado no relato. Ausente quando a avaliação fala da clínica em
+   * geral (atendimento, ambiente), que serve a qualquer landing. Permite que
+   * uma página priorize os relatos do seu próprio tratamento.
+   */
+  treatment?: "lentes" | "implantes";
 }
 
 export interface ComparisonRow {
@@ -64,6 +70,11 @@ export interface LandingContent {
   audience: {
     title: string;
     items: string[];
+    /**
+     * Fecha a lista e emenda na seção seguinte. É texto de passagem, não CTA:
+     * a lista termina sem conclusão e a página perde o fio sem ele.
+     */
+    outro?: string;
   };
   explainer: {
     title: string;
@@ -86,6 +97,8 @@ export interface LandingContent {
     aspect?: string;
     before?: string;
     after?: string;
+    /** Arquivo único que já traz o antes e o depois montados. */
+    combined?: string;
   }[];
   benefits: {
     title: string;

@@ -19,7 +19,6 @@ export const HOME_LINKS: HomeLink[] = [
     hint: "Harmonia e naturalidade em poucas sessões",
     href: "/lentes",
     external: false,
-    disabled: true,
   },
   {
     label: "Implantes",

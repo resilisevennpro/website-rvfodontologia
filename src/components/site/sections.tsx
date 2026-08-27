@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowDown, Check, MessageCircle, Quote, Star } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, MessageCircle, Quote, Star } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -197,15 +197,31 @@ export function Audience({
       <ul className="reveal-stagger mt-8 grid gap-3 sm:grid-cols-2">
         {content.audience.items.map((item) => (
           <li key={item} className={`flex items-start gap-3 p-4 ${CARD} ${CARD_HOVER}`}>
-            <Check
+            {/* Seta, não check: a lista são queixas da pessoa, não itens que a
+                clínica entrega. Um check leria como "confirmado" sobre algo que
+                ela gostaria de não ter, e ainda apagaria a diferença para o
+                bloco de transparência, onde o check está no lugar certo. */}
+            <ArrowRight
               aria-hidden="true"
               strokeWidth={2.5}
-              className="mt-px size-5 shrink-0 text-foreground/85"
+              className="mt-0.5 size-5 shrink-0 text-brand-gray"
             />
             <span className="text-sm leading-relaxed">{item}</span>
           </li>
         ))}
       </ul>
+      {/* Fecho da lista: costura o bloco à seção seguinte. Texto corrido, sem
+          botão, para não competir com os CTAs da página. Centralizado e com
+          respiro largo acima, para ler como passagem entre seções e não como
+          um sexto item da lista.
+
+          `whitespace-pre-line`: a quebra entre as frases vem de um `\n` na
+          copy, para a pergunta ficar sozinha na primeira linha. */}
+      {content.audience.outro && (
+        <p className="reveal mx-auto mt-14 max-w-2xl whitespace-pre-line text-center font-accent text-xl leading-relaxed text-muted-foreground lg:mt-16 lg:text-2xl">
+          {highlight(content.audience.outro, "font-semibold text-foreground")}
+        </p>
+      )}
     </Section>
   );
 }
@@ -422,9 +438,16 @@ export function Investment({
 function BenefitsCarousel({
   items,
   overImage,
+  outlineOnDesktop = false,
 }: {
   items: Benefit[];
   overImage: boolean;
+  /**
+   * No desktop, contorno off-white sólido no card. Serve à seção com foto
+   * lateral, onde o card grafite se apoia sobre o véu, também grafite, e
+   * precisa da borda para se destacar.
+   */
+  outlineOnDesktop?: boolean;
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -452,9 +475,11 @@ function BenefitsCarousel({
     return () => window.clearInterval(id);
   }, [api, paused]);
 
-  const cardClass = overImage
-    ? "bg-primary/95 lg:border lg:border-primary-foreground/10"
-    : "bg-primary";
+  const cardClass = outlineOnDesktop
+    ? "bg-primary/95 lg:border lg:border-primary-foreground"
+    : overImage
+      ? "bg-primary/95 lg:border lg:border-primary-foreground/10"
+      : "bg-primary";
 
   return (
     <div
@@ -531,13 +556,109 @@ export function Benefits({
   image,
   alt,
   id,
+  sideImage = false,
+  mobileImage,
+  imageClassName,
 }: {
   content: LandingContent;
   /** Foto de ambiente. Fundo da seção no desktop, bloco próprio no mobile. */
   image?: string;
   alt?: string;
   id?: string;
+  /**
+   * Restringe a foto à metade direita da seção, sangrando de topo a fundo, com
+   * o grafite entrando pela esquerda. Fotos de ambiente ganham em cobrir a
+   * seção inteira; macros (uma arcada em close) estouram nesse tamanho.
+   */
+  sideImage?: boolean;
+  /**
+   * Versão da foto para o mobile, em `sideImage`. Recebe um recorte com fundo
+   * transparente, colado no topo da seção sem card nem cantos arredondados,
+   * onde a foto retangular ficaria pesada na largura estreita.
+   */
+  mobileImage?: string;
+  /**
+   * Enquadramento da foto. No modo de fundo o padrão joga o assunto para a
+   * direita, longe da coluna de cards; em `sideImage` a metade direita já é
+   * só da imagem, então o padrão é centralizado.
+   */
+  imageClassName?: string;
 }) {
+  /*
+   * Só o `object-position`: em `sideImage` a imagem é posicionada e dimensionada
+   * pelo próprio bloco (metade direita, altura cheia), então um `w-full` ou
+   * `aspect-*` vindo daqui brigaria com isso.
+   */
+  const framing = imageClassName ?? (sideImage ? "object-center" : "size-full object-cover object-right");
+
+  if (sideImage && image) {
+    return (
+      /* Mesmo tratamento do hero, espelhado: a foto sangra na metade direita,
+         de topo a fundo, e o grafite entra pela esquerda. Quem resolve a
+         emenda é a máscara da imagem, não uma parada opaca do véu. */
+      <Section
+        id={id}
+        className="bg-primary lg:py-28"
+        backdrop={
+          <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
+            <img
+              src={image}
+              alt=""
+              className={`absolute inset-y-0 right-0 h-full w-[55%] object-cover ${framing} [mask-image:linear-gradient(to_left,black_55%,transparent_100%)]`}
+              loading="lazy"
+            />
+            {/* Véu contínuo sobre a foto: grafite firme junto aos cards,
+                abrindo para a direita para o acabamento aparecer. */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/60 via-45% to-transparent to-85%" />
+          </div>
+        }
+      >
+        {/* No mobile a foto vem antes do título: texto sobre uma macro em tela
+            estreita ficaria ilegível.
+
+            Com `mobileImage` (recorte em PNG transparente), ela cola no topo da
+            seção: as margens negativas anulam o padding do `Section`, e sem
+            card nem cantos o recorte se apoia direto no grafite do fundo. */}
+        {mobileImage ? (
+          /* O PNG tem uma faixa transparente alta embaixo, que afastaria o
+             título. O `aspect` corta nela, e `object-top` mantém a arcada. */
+          <div className="-mx-5 -mt-16 mb-6 lg:hidden">
+            <img
+              src={mobileImage}
+              alt={alt ?? ""}
+              aria-hidden={alt ? undefined : "true"}
+              className="block aspect-[16/7] w-full object-cover object-top"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="mb-10 overflow-hidden rounded-2xl shadow-card lg:hidden">
+            <img
+              src={image}
+              alt={alt ?? ""}
+              aria-hidden={alt ? undefined : "true"}
+              className="block aspect-[4/3] w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
+        {/* Coluna estreita: impede que título e cards avancem sob a foto. */}
+        <div className="lg:max-w-lg">
+          {/* A seção é grafite em todas as larguras, então o título inverte
+              sempre: sem isso o texto ficaria grafite sobre grafite no mobile
+              e só a ênfase, em cinza, apareceria. */}
+          <SectionTitle
+            className="text-primary-foreground"
+            emphasisClass="font-semibold text-primary-foreground/60"
+          >
+            {content.benefits.title}
+          </SectionTitle>
+          <BenefitsCarousel items={content.benefits.items} overImage outlineOnDesktop />
+        </div>
+      </Section>
+    );
+  }
+
   return (
     /* Com foto, a seção vira o contexto dos cards: no desktop ela é fundo, com
        véu grafite para os cards escuros não se perderem sobre a imagem clara;
@@ -548,14 +669,9 @@ export function Benefits({
       backdrop={
         image && (
           <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
-            {/* `object-right`: o assunto da foto fica à direita, longe da
-                coluna de cards. */}
-            <img
-              src={image}
-              alt=""
-              className="size-full object-cover object-right"
-              loading="lazy"
-            />
+            {/* Por padrão o assunto da foto fica à direita, longe da coluna de
+                cards. Ajustável por `imageClassName`. */}
+            <img src={image} alt="" className={imageClassName} loading="lazy" />
             {/* Gradiente em vez de véu chapado: grafite quase opaco sob os
                 cards, abrindo para a direita para a clínica aparecer. */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/75 via-primary/45 via-55% to-primary/10" />
@@ -631,11 +747,17 @@ export function FinalCta({
   image,
   alt,
   imageClassName = "aspect-[4/3] w-full rounded-xl object-cover",
+  cardClassName = "",
 }: {
   content: LandingContent;
   image?: string;
   alt?: string;
   imageClassName?: string;
+  /**
+   * Ajustes no card grafite. Serve para estreitá-lo no desktop, quando o bloco
+   * sem imagem fica largo demais para as poucas linhas que carrega.
+   */
+  cardClassName?: string;
 }) {
   /*
    * Com imagem o bloco vira duas colunas no desktop, texto à esquerda e foto à
@@ -661,7 +783,7 @@ export function FinalCta({
           image
             ? "grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12"
             : "text-center"
-        }`}
+        } ${cardClassName}`}
       >
         {/* No mobile a imagem vem antes do texto; no desktop, `lg:order-2`
             manda para a coluna da direita. */}
@@ -707,8 +829,17 @@ export function Comparison({ content }: { content: LandingContent }) {
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{intro}</p>
       </div>
 
-      <div className="mt-8 overflow-x-auto">
-        <table className={`w-full min-w-[34rem] border-collapse overflow-hidden ${CARD}`}>
+      {/*
+        A borda mora no contêiner, não na `table`: com `border-collapse` as
+        bordas das linhas se fundem com a da tabela e comem o contorno externo
+        nas laterais e no rodapé. No wrapper ela é desenhada por fora, inteira.
+
+        `overflow-hidden` recorta os cantos do cabeçalho grafite ao raio da
+        borda; o scroll horizontal fica no elemento de dentro.
+      */}
+      <div className="mt-8 overflow-hidden rounded-xl border border-foreground/40 shadow-soft">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[34rem] border-collapse bg-card">
           {/* Cabeçalho grafite: ancora a tabela e destaca as opções comparadas. */}
           <thead className="bg-primary text-primary-foreground">
             <tr>
@@ -730,7 +861,10 @@ export function Comparison({ content }: { content: LandingContent }) {
             {rows.map((row) => (
               <tr
                 key={row.label}
-                className="border-b border-foreground/10 transition-colors duration-200 last:border-0 hover:bg-foreground/[0.04]"
+                /* Zebra discreta: o off-white é a base, então a faixa alternada
+                   fica bem abaixo do hover (0.04) para que o hover continue
+                   legível sobre as duas cores de linha. */
+                className="border-b border-foreground/10 transition-colors duration-200 last:border-0 even:bg-foreground/[0.02] hover:bg-foreground/[0.06]"
               >
                 <th scope="row" className="p-4 text-left text-sm font-medium text-muted-foreground">
                   {row.label}
@@ -743,7 +877,8 @@ export function Comparison({ content }: { content: LandingContent }) {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </Section>
   );
@@ -1085,6 +1220,12 @@ export interface BeforeAfterCase {
   aspect?: string;
   before?: string;
   after?: string;
+  /**
+   * Arquivo único que já traz o antes e o depois montados. Ocupa o card
+   * inteiro, sem dividir em dois quadros nem repetir as legendas: elas já
+   * estão na imagem. Quando presente, `before` e `after` são ignorados.
+   */
+  combined?: string;
 }
 
 /**
@@ -1110,6 +1251,68 @@ export function BeforeAfter({
   /** CTA fechando a seção, depois da ressalva ética. */
   cta?: { label: string; origin: WhatsAppOrigin };
 }) {
+  /*
+   * Casos de imagem única são retrato (antes em cima, depois embaixo) e ficam
+   * bem mais altos que um par lado a lado. Numa grade uniforme eles esticariam
+   * a linha inteira, deixando os cards de par com um vão morto embaixo, então
+   * cada tipo vai para a sua coluna.
+   */
+  const combinedCases = cases.filter((item) => item.combined);
+  const pairCases = cases.filter((item) => !item.combined);
+  const splitColumns = combinedCases.length > 0 && pairCases.length > 0;
+
+  const renderCase = (item: BeforeAfterCase) => (
+    <figure key={item.label} className={`p-4 ${CARD}`}>
+      {item.combined ? (
+        /* Comparação já montada no arquivo: entra inteira, sem a grade de dois
+           quadros e sem `object-cover`, senão o recorte cairia no meio da
+           imagem e cortaria uma das metades. */
+        <img
+          src={item.combined}
+          alt={`${item.shortLabel ?? item.label}, antes e depois do tratamento`}
+          className="w-full rounded-lg"
+          loading="lazy"
+        />
+      ) : (
+        /* Antes e depois lado a lado: a comparação só funciona se as duas
+           imagens tiverem o mesmo enquadramento e a mesma altura. */
+        <div className="grid grid-cols-2 gap-2">
+          {(["before", "after"] as const).map((moment) => {
+            const src = item[moment];
+            const caption = moment === "before" ? "Antes" : "Depois";
+            return (
+              <div key={moment}>
+                {src ? (
+                  <img
+                    src={src}
+                    alt={`${item.shortLabel ?? item.label}, ${caption.toLowerCase()} do tratamento`}
+                    className={`w-full rounded-lg object-cover ${
+                      item.aspect ?? "aspect-[4/3] lg:aspect-square"
+                    }`}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    className={`grid place-items-center rounded-lg border border-dashed border-foreground/25 bg-foreground/[0.03] px-3 text-center ${
+                      item.aspect ?? "aspect-[4/3] lg:aspect-square"
+                    }`}
+                  >
+                    <span className="text-xs leading-relaxed text-brand-gray">
+                      aguardando foto
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <figcaption className="mt-3 text-sm leading-relaxed text-foreground">
+        {item.label}
+      </figcaption>
+    </figure>
+  );
+
   return (
     <Section id={id} className="bg-card">
       <div className="max-w-3xl">
@@ -1119,57 +1322,30 @@ export function BeforeAfter({
         )}
       </div>
 
-      {/* Caso único não vai para grade: sozinho em duas colunas ficaria com
-          metade da largura e um vão morto ao lado. */}
-      <div
-        className={
-          cases.length === 1
-            ? "reveal-stagger mt-8 max-w-xl"
-            : `reveal-stagger mt-8 grid gap-6 sm:grid-cols-2 ${
-                cases.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-2"
-              }`
-        }
-      >
-        {cases.map((item) => (
-          <figure key={item.label} className={`h-full p-4 ${CARD}`}>
-            {/* Antes e depois lado a lado: a comparação só funciona se as duas
-                imagens tiverem o mesmo enquadramento e a mesma altura. */}
-            <div className="grid grid-cols-2 gap-2">
-              {(["before", "after"] as const).map((moment) => {
-                const src = item[moment];
-                const caption = moment === "before" ? "Antes" : "Depois";
-                return (
-                  <div key={moment}>
-                    {src ? (
-                      <img
-                        src={src}
-                        alt={`${item.shortLabel ?? item.label}, ${caption.toLowerCase()} do tratamento`}
-                        className={`w-full rounded-lg object-cover ${
-                          item.aspect ?? "aspect-[4/3] lg:aspect-square"
-                        }`}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div
-                        className={`grid place-items-center rounded-lg border border-dashed border-foreground/25 bg-foreground/[0.03] px-3 text-center ${
-                          item.aspect ?? "aspect-[4/3] lg:aspect-square"
-                        }`}
-                      >
-                        <span className="text-xs leading-relaxed text-brand-gray">
-                          aguardando foto
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            <figcaption className="mt-3 text-sm leading-relaxed text-foreground">
-              {item.label}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
+      {splitColumns ? (
+        /* `items-start`: cada coluna cresce conforme o próprio conteúdo, em vez
+           de esticar para a altura da vizinha. */
+        <div className="reveal-stagger mt-8 grid items-start gap-6 lg:grid-cols-2">
+          {/* Pares empilhados, um sob o outro. */}
+          <div className="flex flex-col gap-6">{pairCases.map(renderCase)}</div>
+          {/* Comparações já montadas em arquivo único. */}
+          <div className="flex flex-col gap-6">{combinedCases.map(renderCase)}</div>
+        </div>
+      ) : (
+        /* Caso único não vai para grade: sozinho em duas colunas ficaria com
+           metade da largura e um vão morto ao lado. */
+        <div
+          className={
+            cases.length === 1
+              ? "reveal-stagger mt-8 max-w-xl"
+              : `reveal-stagger mt-8 grid items-start gap-6 sm:grid-cols-2 ${
+                  cases.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-2"
+                }`
+          }
+        >
+          {cases.map(renderCase)}
+        </div>
+      )}
 
       {/* Ressalva ética do CFO: precisa ser legível, não miudinho de rodapé, e
           fica colada às imagens, antes do CTA. */}
