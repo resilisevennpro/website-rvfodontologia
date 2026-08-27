@@ -1,8 +1,6 @@
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, Routes } from "react-router-dom";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 import Lentes from "./pages/Lentes";
 import Implantes from "./pages/Implantes";
@@ -108,23 +106,17 @@ function safeJsonLd(value: unknown) {
 }
 
 export async function prerender({ url }: { url: string }) {
-  /* `QueryClient` novo a cada rota: um cliente compartilhado carregaria estado
-     de uma página para a outra durante o build. */
-  const queryClient = new QueryClient();
-
+  /* A árvore espelha a de `App.tsx`: qualquer provider a mais aqui mudaria o
+     HTML gerado e daria descasamento na hidratação. */
   const html = renderToString(
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <StaticRouter location={url}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/lentes" element={<Lentes />} />
-            <Route path="/implantes" element={<Implantes />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </StaticRouter>
-      </TooltipProvider>
-    </QueryClientProvider>,
+    <StaticRouter location={url}>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/lentes" element={<Lentes />} />
+        <Route path="/implantes" element={<Implantes />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </StaticRouter>,
   );
 
   const meta = ROUTE_META[url as keyof typeof ROUTE_META];

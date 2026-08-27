@@ -1308,8 +1308,9 @@ export function BeforeAfter({
                     className={`w-full rounded-lg object-cover ${
                       item.aspect ?? "aspect-[4/3] lg:aspect-square"
                     }`}
-                    /* Par lado a lado: cada foto ocupa metade da coluna. */
-                    sizes="(min-width: 1024px) 17vw, 50vw"
+                    /* Par lado a lado dentro de um card que já é metade da
+                       grade: no desktop cada foto dá ~230px, no mobile ~45vw. */
+                    sizes="(min-width: 1024px) 240px, 45vw"
                   />
                 ) : (
                   <div

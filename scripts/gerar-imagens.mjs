@@ -25,7 +25,13 @@ const manifesto = path.join(raiz, "src", "content", "imagens.json");
 
 /* As larguras cobrem o mobile (640), o tablet e o desktop comum (1024) e as
    telas densas (1600). Acima disso o ganho visual não paga os bytes. */
-const LARGURAS = [640, 1024, 1600];
+/*
+ * 400 entra por causa dos antes/depois: são pares lado a lado dentro de um
+ * card, e cada foto fica com ~230px no desktop e ~180px no celular. Sem uma
+ * variante pequena, a de 640 era a menor opção e o navegador baixava mais que
+ * o dobro do necessário.
+ */
+const LARGURAS = [400, 640, 1024, 1600];
 const QUALIDADE = 78;
 
 /*
