@@ -15,7 +15,7 @@ export const IMPLANTES: LandingContent = {
   origin: "implantes",
 
   hero: {
-    title: "Volte a morder e sorrir **com confiança**",
+    title: "Volte a comer e sorrir **com confiança**",
     subtitle:
       "O implante devolve o que a ausência do dente tirou: firmeza para mastigar, segurança para falar e naturalidade para sorrir. Reconstruímos de um dente a uma arcada inteira - Içara, SC.",
     cta: "Tirar uma dúvida no WhatsApp",
@@ -187,7 +187,7 @@ export const IMPLANTES: LandingContent = {
       /* O "depois" é um arquivo em retrato: o recorte quadrado da seção pega a
          região central da boca, que é onde está o sorriso frontal. */
       before: "/implante-a2.jpeg",
-      after: "/implante-d2.jpeg",
+      after: "/implante-d2.png",
     },
     {
       label:
@@ -199,8 +199,8 @@ export const IMPLANTES: LandingContent = {
        * prótese (`implante-a1-semdente.jpeg`), deixada de fora de propósito
        * para não inflar a comparação.
        */
-      before: "/implante-a1.jpeg",
-      after: "/implante-d1.jpeg",
+      before: "/implante-a1.png",
+      after: "/implante-d1.png",
     },
     // TODO: segundo caso, de preferência um implante unitário, para a página
     // não ilustrar só reabilitação total.
