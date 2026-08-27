@@ -1,4 +1,4 @@
-import { SOCIAL, whatsappLink } from "./site";
+import { CLINIC, SOCIAL, whatsappLink } from "./site";
 
 export interface HomeLink {
   label: string;
@@ -48,9 +48,8 @@ export const HOME_LINKS: HomeLink[] = [
     external: true,
   },
   {
-    // TODO: incluir o bairro assim que o endereço completo for confirmado
     label: "Onde Estamos",
-    hint: "Içara – SC",
+    hint: `${CLINIC.address.district} – ${CLINIC.city}, ${CLINIC.state}`,
     href: SOCIAL.maps,
     external: true,
   },

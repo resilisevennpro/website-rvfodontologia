@@ -35,15 +35,24 @@ export const CLINIC = {
     },
   },
 
-  // TODO: endereço completo (rua, número, bairro, CEP)
   address: {
-    street: "",
-    district: "",
-    zip: "",
+    street: "R. Altamiro Guimarães, 189",
+    district: "Centro",
+    zip: "88820-000",
   },
 
-  // TODO: horário de atendimento
-  openingHours: "",
+  /** Segunda a sexta, 8h30 às 18h30. Formato schema.org. */
+  openingHours: "Mo-Fr 08:30-18:30",
+
+  /** Mesma informação, para exibição na página. */
+  openingHoursLabel: "Segunda a sexta, das 8h30 às 18h30",
+
+  /**
+   * Cidades atendidas, para a busca local. Içara é a sede; as demais são da
+   * região e sustentam consultas do tipo "lentes em Criciúma".
+   * TODO: confirmar com a clínica de onde vêm os pacientes de fora.
+   */
+  areaServed: ["Içara", "Criciúma", "Balneário Rincão"],
 } as const;
 
 export const SOCIAL = {
@@ -64,6 +73,9 @@ export const SOCIAL = {
 const WHATSAPP_CLINICA = "5548000000000";
 /** WhatsApp da secretaria: (48) 99986-3951. */
 const WHATSAPP_SECRETARIA = "5548999863951";
+
+/** Mesmo número, no formato E.164 exigido pelo schema.org. */
+export const WHATSAPP_SECRETARIA_DISPLAY = "+5548999863951";
 
 /** Compatibilidade: número padrão usado por quem importa direto. */
 export const WHATSAPP_NUMBER = WHATSAPP_CLINICA;
@@ -112,6 +124,18 @@ export const LEGAL_SIGNATURE = [
   `RT: ${CLINIC.responsibleTechnician} · ${CLINIC.cro} · ${CLINIC.epao}`,
 ] as const;
 
+/**
+ * Imagem de compartilhamento (WhatsApp, Instagram, redes).
+ *
+ * Arte em 1200x630, a proporção que os apps usam no cartão de link: a equipe e
+ * o logo aparecem inteiros, sem o recorte que uma foto 3:2 sofria.
+ *
+ * JPG a 90% e não o PNG original: 120 KB contra 716 KB, sem diferença visível
+ * nesse tamanho. O PNG passava dos 600 KB que o WhatsApp aceita para montar o
+ * preview, e o cartão podia simplesmente não aparecer.
+ */
+export const OG_IMAGE = `${CLINIC.domain}/og-rvf-odontologia.jpg`;
+
 export const SEO = {
   home: {
     title: `${CLINIC.name} | ${CLINIC.city} – ${CLINIC.state}`,
@@ -120,9 +144,11 @@ export const SEO = {
     path: "/",
   },
   lentes: {
-    title: `Lentes em Resina em ${CLINIC.city} | ${CLINIC.name}`,
+    /* Resina e porcelana no título: a landing trabalha os dois materiais, e o
+       título anterior ("Lentes em Resina") perdia a busca por porcelana. */
+    title: `Lentes em Resina e Porcelana em ${CLINIC.city} | ${CLINIC.name}`,
     description:
-      "Lentes em resina com técnica minimamente invasiva em Içara-SC. Planejamento individualizado e acabamento natural. Agende sua avaliação.",
+      "Lentes em resina e porcelana com técnica conservadora em Içara-SC. Planejamento a partir das proporções do seu rosto e acabamento natural. Agende sua avaliação.",
     path: "/lentes",
   },
   implantes: {

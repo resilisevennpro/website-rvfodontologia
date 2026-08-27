@@ -25,6 +25,13 @@ import {
   TESTIMONIALS_SOURCE,
 } from "@/content/depoimentos";
 import { CLINIC, RESULTS_DISCLAIMER, SEO } from "@/content/site";
+import {
+  breadcrumbSchema,
+  clinicSchema,
+  faqSchema,
+  graph,
+  serviceSchema,
+} from "@/content/schema";
 /*
  * Reserva: artes abstratas da marca, usadas antes das fotos reais. Comentadas
  * junto com os blocos que as usavam, senão o lint acusa import sem uso. Para
@@ -40,16 +47,19 @@ const sorrisoPhoto = "/implante-sorrindo-lateral.jpeg";
 const protesePhoto = "/arcada-protese.png";
 const clinicaPhoto = "/rvf-odontologia-2.jpeg";
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${CLINIC.domain}/implantes#faq`,
-  mainEntity: IMPLANTES.faq.items.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: { "@type": "Answer", text: item.answer },
-  })),
-};
+/* Um grafo por página: o FAQ alimenta o rich result e as respostas de
+   assistentes; o serviço e a clínica ancoram a busca local. */
+const jsonLd = graph(
+  clinicSchema,
+  serviceSchema({
+    path: "/implantes",
+    name: "Implantes dentários",
+    description: SEO.implantes.description,
+    procedureType: "https://schema.org/SurgicalProcedure",
+  }),
+  faqSchema("/implantes", IMPLANTES.faq.items),
+  breadcrumbSchema("/implantes", "Implantes"),
+);
 
 /**
  * Copy de autoridade da página. Fica aqui, e não em `implantes.ts`, porque é

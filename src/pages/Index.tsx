@@ -4,30 +4,12 @@ import { Seo } from "@/components/Seo";
 import { HOME_LINKS } from "@/content/home";
 import { Credits } from "@/components/site/Credits";
 import { CLINIC, LEGAL_SIGNATURE, SEO, SOCIAL, whatsappLink } from "@/content/site";
+import { clinicSchema } from "@/content/schema";
 import heroImage from "@/assets/hero-equipe.jpg";
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Dentist",
-  "@id": `${CLINIC.domain}/#clinica`,
-  name: CLINIC.name,
-  url: CLINIC.domain,
-  image: `${CLINIC.domain}/favicon.png`,
-  medicalSpecialty: "Dentistry",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: CLINIC.city,
-    addressRegion: CLINIC.state,
-    addressCountry: "BR",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: SOCIAL.geo.lat,
-    longitude: SOCIAL.geo.lng,
-  },
-  sameAs: [SOCIAL.instagram],
-  hasMap: SOCIAL.maps,
-};
+/* A clínica vem de `schema.ts`, a mesma entidade referenciada pelas landings:
+   declarada em dois lugares, as duas versões divergiriam. */
+const jsonLd = clinicSchema;
 
 const cardClass =
   /* Grafite da marca: os links são a ação principal da home e ancoram a

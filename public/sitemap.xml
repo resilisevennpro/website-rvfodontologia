@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Atualizar o `lastmod` da rota alterada a cada publicação com mudança de
+  conteúdo. Data sem atualização vale menos que data ausente: o Google aprende
+  a ignorar o campo quando ele não acompanha as mudanças reais.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rvfodontologia.com.br/</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://rvfodontologia.com.br/lentes</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://rvfodontologia.com.br/implantes</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

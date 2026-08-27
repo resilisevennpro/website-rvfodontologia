@@ -26,6 +26,13 @@ import {
   TESTIMONIALS_SOURCE,
 } from "@/content/depoimentos";
 import { CLINIC, SEO } from "@/content/site";
+import {
+  breadcrumbSchema,
+  clinicSchema,
+  faqSchema,
+  graph,
+  serviceSchema,
+} from "@/content/schema";
 // TODO: substituir as artes abstratas por fotos reais da clínica
 /*
  * Reserva: a arte abstrata do hero, usada antes da foto real. Comentada junto
@@ -51,16 +58,18 @@ const explainerPhoto = "/ceramica-dente-branco.jpeg";
 const benefitsPhoto = "/lentes-1.jpg";
 const benefitsPhotoMobile = "/lentes-1-fundotransparente.png";
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${CLINIC.domain}/lentes#faq`,
-  mainEntity: LENTES.faq.items.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: { "@type": "Answer", text: item.answer },
-  })),
-};
+/* Um grafo por página: o FAQ alimenta o rich result e as respostas de
+   assistentes; o serviço e a clínica ancoram a busca local. */
+const jsonLd = graph(
+  clinicSchema,
+  serviceSchema({
+    path: "/lentes",
+    name: "Lentes de resina e porcelana",
+    description: SEO.lentes.description,
+  }),
+  faqSchema("/lentes", LENTES.faq.items),
+  breadcrumbSchema("/lentes", "Lentes e Facetas"),
+);
 
 /**
  * Ordem própria desta landing: a decisão sobre lentes é estética e passa por

@@ -50,11 +50,12 @@ export function Footer({ origin }: FooterProps) {
               className="inline-flex items-center gap-2 text-primary-foreground/85 underline-offset-4 transition-colors hover:text-primary-foreground hover:underline"
             >
               <MapPin aria-hidden="true" className="size-4" />
-              {/* TODO: exibir o endereço completo quando confirmado */}
-              {address || `${CLINIC.city} – ${CLINIC.state}`}
+              {address ? `${address} – ${CLINIC.city}, ${CLINIC.state}` : `${CLINIC.city} – ${CLINIC.state}`}
             </a>
-            {CLINIC.openingHours && (
-              <p className="text-primary-foreground/70">{CLINIC.openingHours}</p>
+            {/* `openingHoursLabel`, não `openingHours`: este último está no
+                formato do schema.org ("Mo-Fr 08:30-18:30"), ilegível na tela. */}
+            {CLINIC.openingHoursLabel && (
+              <p className="text-primary-foreground/70">{CLINIC.openingHoursLabel}</p>
             )}
           </div>
         </div>
