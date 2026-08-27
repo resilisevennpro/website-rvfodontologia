@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+/*
+ * As fontes são carregadas por <link> no `index.html`, não por `@import`.
+ *
+ * O `@import` daqui era descoberto só depois deste CSS baixar, criando a
+ * cadeia HTML -> JS -> CSS -> CSS do Google -> woff2. No <link> o navegador
+ * enxerga a folha do Google já no HTML e a busca em paralelo.
+ */
 
 @tailwind base;
 @tailwind components;

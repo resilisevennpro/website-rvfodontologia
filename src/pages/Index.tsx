@@ -5,7 +5,10 @@ import { HOME_LINKS } from "@/content/home";
 import { Credits } from "@/components/site/Credits";
 import { CLINIC, LEGAL_SIGNATURE, SEO, SOCIAL, whatsappLink } from "@/content/site";
 import { clinicSchema } from "@/content/schema";
-import heroImage from "@/assets/hero-equipe.jpg";
+import { Foto } from "@/components/site/Foto";
+
+/* De `public/` para entrar no `npm run images`: é o LCP da home. */
+const heroImage = "/hero-equipe.jpg";
 
 /* A clínica vem de `schema.ts`, a mesma entidade referenciada pelas landings:
    declarada em dois lugares, as duas versões divergiriam. */
@@ -24,13 +27,13 @@ const Index = () => (
       {/* Foto da equipe: topo no mobile, coluna esquerda fixa no desktop.
           object-top preserva os rostos e o logo na parede ao recortar. */}
       <div className="relative lg:sticky lg:top-0 lg:h-screen">
-        <img
+        <Foto
           src={heroImage}
           alt={`Equipe da ${CLINIC.name}`}
           className="h-[46vh] max-h-[420px] min-h-[260px] w-full object-cover object-top lg:h-full lg:max-h-none lg:object-center"
-          width={1214}
-          height={1214}
-          fetchPriority="high"
+          /* Meia tela no desktop (grid de 2 colunas), tela cheia no mobile. */
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          priority
         />
         <div
           aria-hidden="true"

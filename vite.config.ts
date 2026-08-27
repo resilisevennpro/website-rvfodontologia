@@ -34,6 +34,26 @@ export default defineConfig(({ mode }) => ({
         additionalPrerenderRoutes: ["/lentes", "/implantes"],
       }),
   ].filter(Boolean),
+  build: {
+    rollupOptions: {
+      output: {
+        /*
+         * Separa as dependências do código das páginas.
+         *
+         * Sem isto o Rollup junta React, o router e o Radix no mesmo chunk da
+         * primeira página que os importa — que acabava batizado de `Index` e
+         * pesando 275 kB, baixado inteiro também por quem abria só /implantes.
+         *
+         * Em `vendor`, esse código passa a ser um arquivo estável: muda só
+         * quando uma dependência muda, então o cache do visitante sobrevive a
+         * cada deploy de copy ou layout.
+         */
+        manualChunks(id) {
+          if (id.includes("node_modules")) return "vendor";
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

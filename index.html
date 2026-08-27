@@ -3,12 +3,50 @@
   <head>
     <meta charset="UTF-8" />
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MZ2D98GR');</script>
+    <!--
+      Google Tag Manager, com carregamento adiado.
+
+      O container puxa ~485 KiB (GTM + GA4 + Google Ads + Pixel). Síncrono no
+      head, isso competia com o HTML, o CSS e a imagem do LCP justamente no
+      primeiro segundo. Aqui ele sobe no primeiro sinal de que a pessoa está
+      de fato na página: scroll, toque, tecla, ou 3s de espera.
+
+      O `dataLayer` é criado imediatamente, então qualquer `push` disparado
+      antes do container subir fica na fila e é processado quando ele carrega.
+      Nada de evento se perde por causa do atraso.
+
+      Contrapartida conhecida: sessão que abre e fecha em menos de 3s sem
+      nenhuma interação não registra pageview. Conversão (clique no WhatsApp)
+      é interação por definição, então não é afetada.
+    -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        var carregado = false;
+        function carregar() {
+          if (carregado) return;
+          carregado = true;
+          eventos.forEach(function (e) {
+            w.removeEventListener(e, carregar);
+          });
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        }
+        var eventos = ['scroll', 'pointerdown', 'keydown', 'touchstart'];
+        eventos.forEach(function (e) {
+          w.addEventListener(e, carregar, { once: true, passive: true });
+        });
+        /* Rede de segurança: sem interação nenhuma, o container ainda sobe e a
+           sessão é contabilizada. */
+        if (w.requestIdleCallback) w.requestIdleCallback(carregar, { timeout: 3000 });
+        else w.setTimeout(carregar, 3000);
+      })(window, document, 'script', 'dataLayer', 'GTM-MZ2D98GR');
+    </script>
     <!-- End Google Tag Manager -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,6 +80,32 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      Fontes da marca. Estavam num `@import` no topo do `index.css`, onde só
+      eram descobertas depois do bundle CSS baixar; aqui o navegador as vê já
+      no HTML e busca em paralelo com o resto.
+
+      Os pesos são só os que o site usa de fato (400/500/600/700 em ambas, mais
+      os itálicos de Cormorant para a classe `.font-accent`). O 300 saiu: não
+      há nenhum `font-light` no projeto, e cada peso é um woff2 a mais.
+
+      `media=print` + `onload` faz a folha não bloquear a renderização: ela
+      entra como estilo de impressão (ignorado na tela) e vira `all` quando
+      termina de carregar.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
+      />
+    </noscript>
 
     <!-- Ponto de injeção do pré-renderizador: as meta tags e o JSON-LD de cada
          rota entram aqui no build, substituindo os valores da home acima. -->

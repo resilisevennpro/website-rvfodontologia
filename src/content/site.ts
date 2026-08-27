@@ -69,8 +69,8 @@ export const SOCIAL = {
  * própria (clínico geral, canal e próteses). As landings de tratamento têm
  * número próprio, para a clínica saber por qual campanha a pessoa chegou.
  */
-// TODO: número real do WhatsApp das landings (formato: 55 + DDD + número).
-const WHATSAPP_CLINICA = "5548000000000";
+/** WhatsApp da clínica: (48) 99984-6470. */
+const WHATSAPP_CLINICA = "5548999846470";
 /** WhatsApp da secretaria: (48) 99986-3951. */
 const WHATSAPP_SECRETARIA = "5548999863951";
 

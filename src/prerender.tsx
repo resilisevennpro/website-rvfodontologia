@@ -61,6 +61,47 @@ const ROUTE_META = {
   },
 } as const;
 
+/*
+ * Imagem do LCP de cada rota, pré-carregada.
+ *
+ * O PageSpeed acusava "a solicitação não é detectável no documento inicial": a
+ * foto do hero só aparece depois do React hidratar, então o navegador não
+ * podia começar a baixá-la durante o parse do HTML. O `preload` com
+ * `imagesrcset` antecipa isso e ainda deixa o navegador escolher a mesma
+ * variante que o `<Foto>` pediria.
+ *
+ * Manter em sincronia com o `sizes` do hero em `sections.tsx` e com as
+ * larguras de `imagens.json`: divergência aqui faz o navegador baixar uma
+ * variante e usar outra, dobrando o custo em vez de reduzi-lo.
+ */
+const LCP_POR_ROTA: Record<string, { base: string; larguras: number[] }> = {
+  "/": { base: "/img/hero-equipe", larguras: [640, 1024] },
+  "/lentes": { base: "/img/dr-vinicius-01", larguras: [640, 1024, 1600] },
+  "/implantes": { base: "/img/dr-vinicius-02", larguras: [640, 1024, 1600] },
+};
+
+const HERO_SIZES = "(min-width: 1024px) 70vw, 100vw";
+/* A home é grid de 2 colunas no desktop, não hero de 70%. */
+const HOME_SIZES = "(min-width: 1024px) 50vw, 100vw";
+
+function preloadLcp(url: string) {
+  const lcp = LCP_POR_ROTA[url];
+  if (!lcp) return [];
+  return [
+    {
+      type: "link",
+      props: {
+        rel: "preload",
+        as: "image",
+        type: "image/webp",
+        imagesrcset: lcp.larguras.map((l) => `${lcp.base}-${l}.webp ${l}w`).join(", "),
+        imagesizes: url === "/" ? HOME_SIZES : HERO_SIZES,
+        fetchpriority: "high",
+      },
+    },
+  ];
+}
+
 /** Escapa o JSON-LD para não fechar o `<script>` cedo demais. */
 function safeJsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
@@ -98,6 +139,7 @@ export async function prerender({ url }: { url: string }) {
       lang: "pt-BR",
       title: meta.title,
       elements: new Set([
+        ...preloadLcp(url),
         { type: "meta", props: { name: "description", content: meta.description } },
         { type: "link", props: { rel: "canonical", href: canonical } },
         { type: "meta", props: { property: "og:title", content: meta.title } },

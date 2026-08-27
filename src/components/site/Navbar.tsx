@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MessageCircle } from "lucide-react";
 import { CLINIC, whatsappLink, type WhatsAppOrigin } from "@/content/site";
-import logoOffwhite from "@/assets/logo-horizontal-offwhite.png";
-import logoGrafite from "@/assets/logo-horizontal-grafite.png";
+import { Foto } from "./Foto";
+
+/* Servidos de `public/` (e não importados de `src/assets`) para entrarem no
+   pipeline do `npm run images`: o original tem 1952px de largura para renderizar
+   a 318px. Ver `scripts/gerar-imagens.mjs`. */
+const logoOffwhite = "/logo-horizontal-offwhite.png";
+const logoGrafite = "/logo-horizontal-grafite.png";
 
 const TREATMENTS = [
   { label: "Lentes", to: "/lentes" },
@@ -59,11 +64,15 @@ export function Navbar({ origin }: { origin: WhatsAppOrigin }) {
           aria-label={`${CLINIC.name}, página inicial`}
           className="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          {/* Duas versões do logo: a barra alterna entre fundo claro e grafite. */}
-          <img
+          {/* Duas versões do logo: a barra alterna entre fundo claro e grafite.
+              O logo está acima da dobra e troca no scroll: `priority` evita o
+              lazy, que atrasaria a primeira pintura da navbar. */}
+          <Foto
             src={scrolled ? logoOffwhite : logoGrafite}
             alt={CLINIC.name}
             className="h-8 w-auto sm:h-10"
+            sizes="318px"
+            priority
           />
         </Link>
 

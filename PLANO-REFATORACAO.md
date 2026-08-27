@@ -102,6 +102,46 @@ identidade se sustenta pelo logo e pela paleta; a diferença nos títulos é sut
 > Se o cliente optar por licenciar a fonte depois, a troca é um commit — a tipografia
 > está centralizada no design system da Fase 3.
 
+### Performance: imagens, fontes e terceiros
+
+O PageSpeed mobile de `/implantes` marcava 49 (LCP 10,6 s). As decisões tomadas para
+resolver, e o porquê de cada uma:
+
+**Os originais das fotos não ficam em `public/`.** Ficam em `fotos-originais/`,
+versionados, e `npm run images` gera as variantes WebP em `public/img/`. O Vite copia
+`public/` inteiro para o `dist`: com os originais lá dentro, ~14 MB de arquivos que
+nenhuma página referencia iam para o deploy a cada publicação. Foto nova só aparece no
+site depois de rodar `npm run images`.
+
+**Não há fallback em JPEG/PNG nas `<picture>`.** O build tem alvo ES2020; todo navegador
+capaz de rodar o site suporta WebP (Safari 14+, de 2020). Um fallback só existiria para
+navegadores que já não conseguem executar o bundle.
+
+**`onlyAbove` / `onlyBelow` no `<Foto>`.** `hidden lg:block` esconde, mas não cancela o
+download: o celular baixava a foto do desktop *e* a do mobile. As duas props restringem
+a fonte por `media`, e aí o navegador busca só a que vai exibir.
+
+**A `<picture>` usa `display:contents`.** As classes dos heros misturam layout
+(`lg:absolute`, `lg:w-[70%]`) e pintura (`object-cover`, `-scale-x-100`, `mask-image`) na
+mesma string. Com `display:contents` a `<picture>` some da árvore de layout e o `<img>`
+segue sendo, para o CSS, filho direto do container — foi o que permitiu trocar `<img>`
+por `<Foto>` sem reescrever nenhuma classe.
+
+**GTM adiado até interação ou 3 s de idle.** O container puxa ~485 KiB competindo com o
+LCP. O `dataLayer` é criado na hora, então nada de evento se perde. Contrapartida
+conhecida: sessão que abre e fecha em menos de 3 s sem tocar na tela não registra
+pageview — o GA4 vai mostrar menos sessões de bounce imediato. Conversão (clique no
+WhatsApp) é interação por definição e não é afetada. **Vale avisar o cliente antes de
+ele estranhar o número.**
+
+**`vercel.json` não aceita comentários.** O schema tem `additionalProperties: false`;
+chaves `"//"` fazem a Vercel rejeitar o deploy. Por isso o cache de `/img/(.*)`
+(`immutable`, 1 ano) está documentado aqui e não no arquivo.
+
+**O rewrite `/(.*)` → `/index.html` não anula o pré-render.** Verificado em produção: o
+arquivo estático tem precedência, e `/lentes` e `/implantes` servem o HTML pré-renderizado
+com título e canonical próprios.
+
 ### Arquitetura de rotas
 
 | Rota | Tipo | Descrição |

@@ -232,6 +232,9 @@ const Implantes = () => {
         id="a-clinica"
         image={clinicaPhoto}
         alt={`Equipe da ${CLINIC.name} na recepção da clínica em ${CLINIC.city}`}
+        /* O padrão (`object-right`) centraliza na vertical e sobra teto. O
+           ponto de foco desce para a altura da equipe. */
+        imageClassName="size-full object-cover object-[100%_62%]"
       />
       <CtaButton origin={IMPLANTES.origin} label="Pedir a avaliação do meu caso" />
       {/* `#faq` é o alvo declarado no JSON-LD acima: o rich result de FAQ no

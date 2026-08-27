@@ -47,7 +47,8 @@ import {
  *
  * import explainerArt from "@/assets/abstract-clinica.png";
  */
-import teamPhoto from "@/assets/hero-equipe.jpg";
+/* De `public/`, como as demais fotos: entra no `npm run images`. */
+const teamPhoto = "/hero-equipe.jpg";
 /* Servida de `public/`: foto real, fora do pipeline de assets do Vite. */
 const heroPhoto = "/dr-vinicius-01.jpeg";
 /* Vista aproximada de um sorriso em cerâmica: ilustra a translucidez e o

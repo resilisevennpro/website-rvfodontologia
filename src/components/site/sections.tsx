@@ -17,6 +17,7 @@ import {
 import { CLINIC, whatsappLink, type WhatsAppOrigin } from "@/content/site";
 import type { Benefit, LandingContent, Testimonial } from "@/content/types";
 import { SectionTitle } from "./SectionTitle";
+import { Foto } from "./Foto";
 import { highlight } from "./highlight";
 
 /**
@@ -121,12 +122,15 @@ export function Hero({
         <>
           {/* Em `stackedImage`, a foto é um bloco normal no mobile (acima do
               texto) e só vira fundo absoluto a partir do `lg`. */}
-          <img
+          {/* Imagem do LCP das landings: `priority` tira o lazy e sobe a
+              prioridade de rede, em vez de deixá-la competir com o bundle. */}
+          <Foto
             src={image}
             alt={stackedImage ? (alt ?? "") : ""}
             aria-hidden={stackedImage && alt ? undefined : "true"}
             className={imageClassName}
-            fetchPriority="high"
+            sizes="(min-width: 1024px) 70vw, 100vw"
+            priority
           />
           {/* Sem `left` próprio: quem define a borda esquerda do véu é o
               `overlayClassName`, para uma landing poder fazer o gradiente
@@ -285,12 +289,12 @@ export function Explainer({
               fillImage ? `h-full ${imageWrapperClassName}` : imageWrapperClassName
             }`}
           >
-            <img
+            <Foto
               src={image}
               alt={alt ?? ""}
               aria-hidden={alt ? undefined : "true"}
               className={imageClassName}
-              loading="lazy"
+              sizes="(min-width: 1024px) 50vw, 100vw"
             />
           </div>
         )}
@@ -601,11 +605,16 @@ export function Benefits({
         className="bg-primary lg:py-28"
         backdrop={
           <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
-            <img
+            {/* `hidden lg:block` no pai esconde, mas não cancela o download: o
+                celular baixaria esta foto além da versão mobile abaixo.
+                `onlyAbove` restringe a fonte ao desktop, e aí o navegador
+                simplesmente não a busca em tela estreita. */}
+            <Foto
               src={image}
               alt=""
               className={`absolute inset-y-0 right-0 h-full w-[55%] object-cover ${framing} [mask-image:linear-gradient(to_left,black_55%,transparent_100%)]`}
-              loading="lazy"
+              sizes="55vw"
+              onlyAbove={1024}
             />
             {/* Véu contínuo sobre a foto: grafite firme junto aos cards,
                 abrindo para a direita para o acabamento aparecer. */}
@@ -623,22 +632,24 @@ export function Benefits({
           /* O PNG tem uma faixa transparente alta embaixo, que afastaria o
              título. O `aspect` corta nela, e `object-top` mantém a arcada. */
           <div className="-mx-5 -mt-16 mb-6 lg:hidden">
-            <img
+            <Foto
               src={mobileImage}
               alt={alt ?? ""}
               aria-hidden={alt ? undefined : "true"}
               className="block aspect-[16/7] w-full object-cover object-top"
-              loading="lazy"
+              sizes="100vw"
+              onlyBelow={1024}
             />
           </div>
         ) : (
           <div className="mb-10 overflow-hidden rounded-2xl shadow-card lg:hidden">
-            <img
+            <Foto
               src={image}
               alt={alt ?? ""}
               aria-hidden={alt ? undefined : "true"}
               className="block aspect-[4/3] w-full object-cover"
-              loading="lazy"
+              sizes="100vw"
+              onlyBelow={1024}
             />
           </div>
         )}
@@ -670,8 +681,15 @@ export function Benefits({
         image && (
           <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
             {/* Por padrão o assunto da foto fica à direita, longe da coluna de
-                cards. Ajustável por `imageClassName`. */}
-            <img src={image} alt="" className={imageClassName} loading="lazy" />
+                cards (`framing`). Ajustável por `imageClassName`.
+                Fundo só do desktop: ver a nota sobre `onlyAbove` acima. */}
+            <Foto
+              src={image}
+              alt=""
+              className={framing}
+              sizes="100vw"
+              onlyAbove={1024}
+            />
             {/* Gradiente em vez de véu chapado: grafite quase opaco sob os
                 cards, abrindo para a direita para a clínica aparecer. */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/75 via-primary/45 via-55% to-primary/10" />
@@ -687,12 +705,13 @@ export function Benefits({
           container corta o excedente da escala. */}
       {image && (
         <div className="mb-10 overflow-hidden rounded-2xl shadow-card lg:hidden">
-          <img
+          <Foto
             src={image}
             alt={alt ?? ""}
             aria-hidden={alt ? undefined : "true"}
             className="block aspect-[4/3] w-full scale-125 object-cover"
-            loading="lazy"
+            sizes="100vw"
+            onlyBelow={1024}
           />
         </div>
       )}
@@ -766,12 +785,12 @@ export function FinalCta({
    */
   const figure = image && (
     <div className="zoom-hover overflow-hidden rounded-xl">
-      <img
+      <Foto
         src={image}
         alt={alt ?? ""}
         aria-hidden={alt ? undefined : "true"}
         className={imageClassName}
-        loading="lazy"
+        sizes="(min-width: 1024px) 50vw, 100vw"
       />
     </div>
   );
@@ -1011,11 +1030,11 @@ export function Team({
               : "zoom-hover rounded-2xl shadow-card"
           }
         >
-          <img
+          <Foto
             src={image}
             alt={alt ?? `Equipe da ${CLINIC.name}`}
             className={imageClassName}
-            loading="lazy"
+            sizes="(min-width: 1024px) 50vw, 100vw"
           />
         </div>
         <div>
@@ -1267,11 +1286,11 @@ export function BeforeAfter({
         /* Comparação já montada no arquivo: entra inteira, sem a grade de dois
            quadros e sem `object-cover`, senão o recorte cairia no meio da
            imagem e cortaria uma das metades. */
-        <img
+        <Foto
           src={item.combined}
           alt={`${item.shortLabel ?? item.label}, antes e depois do tratamento`}
           className="w-full rounded-lg"
-          loading="lazy"
+          sizes="(min-width: 1024px) 33vw, 100vw"
         />
       ) : (
         /* Antes e depois lado a lado: a comparação só funciona se as duas
@@ -1283,13 +1302,14 @@ export function BeforeAfter({
             return (
               <div key={moment}>
                 {src ? (
-                  <img
+                  <Foto
                     src={src}
                     alt={`${item.shortLabel ?? item.label}, ${caption.toLowerCase()} do tratamento`}
                     className={`w-full rounded-lg object-cover ${
                       item.aspect ?? "aspect-[4/3] lg:aspect-square"
                     }`}
-                    loading="lazy"
+                    /* Par lado a lado: cada foto ocupa metade da coluna. */
+                    sizes="(min-width: 1024px) 17vw, 50vw"
                   />
                 ) : (
                   <div
