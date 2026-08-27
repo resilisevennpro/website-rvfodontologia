@@ -20,6 +20,18 @@ export interface Objection {
   answer: string;
 }
 
+/**
+ * Depoimento de paciente. A citação é transcrição de avaliação pública; quando
+ * precisa de corte por regra do CFO, `edited` marca isso no arquivo de
+ * conteúdo para a alteração ficar rastreável.
+ */
+export interface Testimonial {
+  name: string;
+  quote: string;
+  /** Citação encurtada em relação ao original. Ver comentário no item. */
+  edited?: boolean;
+}
+
 export interface ComparisonRow {
   label: string;
   values: [string, string];

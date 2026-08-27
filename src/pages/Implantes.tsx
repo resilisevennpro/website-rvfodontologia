@@ -15,8 +15,14 @@ import {
   Investment,
   Process,
   Team,
+  Testimonials,
 } from "@/components/site/sections";
 import { IMPLANTES } from "@/content/implantes";
+import {
+  TESTIMONIALS,
+  TESTIMONIALS_DISCLAIMER,
+  TESTIMONIALS_SOURCE,
+} from "@/content/depoimentos";
 import { CLINIC, RESULTS_DISCLAIMER, SEO } from "@/content/site";
 /*
  * Reserva: artes abstratas da marca, usadas antes das fotos reais. Comentadas
@@ -200,8 +206,13 @@ const Implantes = () => {
         cases={IMPLANTES.cases}
         cta={{ label: "Quero saber se é possível no meu caso", origin: IMPLANTES.origin }}
       />
-      {/* TODO: seção de depoimentos entra aqui, quando houver relatos reais
-          autorizados por escrito. Ver PLANO-REFATORACAO.md. */}
+      <Testimonials
+        id="depoimentos"
+        items={TESTIMONIALS}
+        disclaimer={TESTIMONIALS_DISCLAIMER}
+        source={TESTIMONIALS_SOURCE}
+        intro="Avaliações públicas de quem já foi atendido na clínica."
+      />
       <Investment content={IMPLANTES} />
       <Benefits
         content={IMPLANTES}

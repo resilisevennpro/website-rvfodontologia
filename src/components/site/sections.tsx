@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowDown, Check, MessageCircle, Quote } from "lucide-react";
+import { ArrowDown, Check, MessageCircle, Quote, Star } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -15,7 +15,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { CLINIC, whatsappLink, type WhatsAppOrigin } from "@/content/site";
-import type { Benefit, LandingContent } from "@/content/types";
+import type { Benefit, LandingContent, Testimonial } from "@/content/types";
 import { SectionTitle } from "./SectionTitle";
 import { highlight } from "./highlight";
 
@@ -898,6 +898,163 @@ export function Team({
           </ul>
         </div>
       </div>
+    </Section>
+  );
+}
+
+/**
+ * Depoimentos em carrossel. As citações vêm das avaliações públicas do Google,
+ * transcritas como texto — nunca como print: texto escala no mobile, é lido por
+ * leitor de tela e indexado.
+ *
+ * A ressalva do CFO fecha o bloco, junto do link para o perfil de origem, que é
+ * o que torna os relatos verificáveis.
+ */
+export function Testimonials({
+  items,
+  disclaimer,
+  source,
+  id,
+  title = "O que dizem as **pacientes**",
+  intro,
+}: {
+  items: Testimonial[];
+  disclaimer: string;
+  source?: { label: string; href: string };
+  id?: string;
+  title?: string;
+  intro?: string;
+}) {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    onSelect();
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  useEffect(() => {
+    if (!api || paused) return;
+    /* `prefers-reduced-motion`: sem avanço automático, só navegação manual. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    /* Mais lento que o carrossel de diferenciais: aqui há texto corrido para
+       ler, e trocar em 5s tiraria a citação do meio da leitura. */
+    const id = window.setInterval(() => {
+      if (document.hidden) return;
+      api.scrollNext();
+    }, 8000);
+    return () => window.clearInterval(id);
+  }, [api, paused]);
+
+  /* Um snap por card também no desktop: com 2 por vista, o contador passa a
+     contar páginas e não depoimentos, e a conta bate errado no fim do laço. */
+  const total = items.length;
+
+  return (
+    <Section id={id}>
+      <div className="max-w-3xl">
+        <SectionTitle>{title}</SectionTitle>
+        {intro && (
+          <p className="reveal mt-4 text-base leading-relaxed text-muted-foreground">
+            {intro}
+          </p>
+        )}
+      </div>
+
+      <div
+        /* Sem `reveal`: o hook observa só os elementos presentes na montagem,
+           e o conteúdo do carrossel entra depois. */
+        className="mt-8"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+      >
+        <Carousel
+          setApi={setApi}
+          opts={{ loop: true, align: "start" }}
+          aria-label="Depoimentos de pacientes"
+        >
+          <CarouselContent className="items-stretch">
+            {items.map((item) => (
+              <CarouselItem key={item.name} className="sm:basis-1/2">
+                {/* Altura mínima: as citações têm comprimentos bem diferentes,
+                    e sem piso o card saltaria a cada troca. */}
+                <figure
+                  className={`flex h-full min-h-[16rem] flex-col p-6 ${CARD}`}
+                >
+                  <Quote
+                    aria-hidden="true"
+                    className="size-6 shrink-0 text-brand-gray"
+                  />
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground">
+                    {item.quote}
+                  </blockquote>
+                  <figcaption className="mt-5 border-t border-foreground/10 pt-4">
+                    <span className="block font-display text-lg font-medium leading-tight">
+                      {item.name}
+                    </span>
+                    <span className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                      {/* A nota é dado da avaliação, não elogio escrito pela
+                          clínica. O texto acessível evita ler 5 ícones soltos. */}
+                      <span aria-hidden="true" className="flex gap-0.5">
+                        {Array.from({ length: 5 }, (_, i) => (
+                          <Star key={i} className="size-3 fill-current" />
+                        ))}
+                      </span>
+                      <span className="sr-only">5 de 5 estrelas.</span>
+                      Avaliação no Google
+                    </span>
+                  </figcaption>
+                </figure>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* Contador e setas: mesma âncora de navegação do carrossel de
+              diferenciais, centralizada sob os cards. */}
+          <div className="mt-5 flex items-center justify-center gap-4">
+            <p
+              aria-live="polite"
+              className="font-display text-sm tabular-nums text-muted-foreground"
+            >
+              {current + 1}/{total}
+            </p>
+            {/* Os botões do shadcn vêm `absolute` com `-left-12`/`-right-12`,
+                que os joga para fora da tela no mobile. `!static` e
+                `!inset-auto` anulam isso para eles fluírem nesta barra. */}
+            <div className="flex items-center gap-2">
+              <CarouselPrevious className="!static !inset-auto size-9 !translate-y-0" />
+              <CarouselNext className="!static !inset-auto size-9 !translate-y-0" />
+            </div>
+          </div>
+        </Carousel>
+      </div>
+
+      <p className="reveal mt-6 text-sm leading-relaxed text-muted-foreground">
+        {disclaimer}
+        {source && (
+          <>
+            {" "}
+            <a
+              href={source.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm underline underline-offset-4 transition-colors duration-300 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {source.label}
+            </a>
+            .
+          </>
+        )}
+      </p>
     </Section>
   );
 }

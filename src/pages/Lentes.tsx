@@ -17,8 +17,14 @@ import {
   Objections,
   Process,
   Team,
+  Testimonials,
 } from "@/components/site/sections";
 import { LENTES, RESULTS_DISCLAIMER } from "@/content/lentes";
+import {
+  TESTIMONIALS,
+  TESTIMONIALS_DISCLAIMER,
+  TESTIMONIALS_SOURCE,
+} from "@/content/depoimentos";
 import { CLINIC, SEO } from "@/content/site";
 // TODO: substituir as artes abstratas por fotos reais da clínica
 import heroArt from "@/assets/abstract-lentes.png";
@@ -57,6 +63,13 @@ const Lentes = () => {
       <Audience content={LENTES} />
       <Explainer content={LENTES} image={explainerArt} />
       <BeforeAfter disclaimer={RESULTS_DISCLAIMER} id="casos" />
+      <Testimonials
+        id="depoimentos"
+        items={TESTIMONIALS}
+        disclaimer={TESTIMONIALS_DISCLAIMER}
+        source={TESTIMONIALS_SOURCE}
+        intro="Avaliações públicas de quem já foi atendido na clínica."
+      />
       <InlineCta
         origin={LENTES.origin}
         text="Quer saber se o seu caso tem **indicação para lentes**?"
