@@ -26,3 +26,6 @@ dist-ssr
 # Arquivos de sistema do Windows
 desktop.ini
 Thumbs.db
+
+# Config temporária que o Vite gera ao carregar vite.config.ts
+vite.config.ts.timestamp-*

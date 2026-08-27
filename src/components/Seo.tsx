@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { CLINIC } from "@/content/site";
+import { CLINIC, OG_IMAGE } from "@/content/site";
 
 interface SeoProps {
   title: string;
@@ -35,8 +35,10 @@ export function Seo({ title, description, path, jsonLd }: SeoProps) {
     upsertMeta('meta[property="og:title"]', "property", "og:title", title);
     upsertMeta('meta[property="og:description"]', "property", "og:description", description);
     upsertMeta('meta[property="og:url"]', "property", "og:url", url);
+    upsertMeta('meta[property="og:image"]', "property", "og:image", OG_IMAGE);
     upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
     upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
+    upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", OG_IMAGE);
 
     let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {
@@ -49,6 +51,18 @@ export function Seo({ title, description, path, jsonLd }: SeoProps) {
 
   useEffect(() => {
     if (!jsonLd) return;
+
+    /*
+     * O build pré-renderiza o JSON-LD desta rota no `<head>`. Ao hidratar, sem
+     * esta checagem, um segundo bloco idêntico seria adicionado e o crawler
+     * leria o schema duplicado. Só injeta quando não veio do HTML servido —
+     * caso do dev server e da navegação client-side entre rotas.
+     */
+    const existing = document.head.querySelector<HTMLScriptElement>(
+      'script[type="application/ld+json"]',
+    );
+    if (existing && !existing.dataset.pageSchema) return;
+
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.dataset.pageSchema = "true";
