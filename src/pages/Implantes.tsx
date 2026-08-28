@@ -25,6 +25,7 @@ import {
   TESTIMONIALS_SOURCE,
 } from "@/content/depoimentos";
 import { CLINIC, RESULTS_DISCLAIMER, SEO } from "@/content/site";
+import type { WhatsAppOrigin } from "@/content/site";
 import {
   breadcrumbSchema,
   clinicSchema,
@@ -89,14 +90,37 @@ const TEAM_COPY = [
  * compromisso com o orçamento. Os CTAs sobem de compromisso conforme a página
  * desce.
  */
-const Implantes = () => {
+/**
+ * Este componente serve DUAS rotas: `/implantes` (orgânico) e `/implantes/ads`
+ * (tráfego pago). É intencional que seja um só arquivo, e não uma cópia: as
+ * duas páginas precisam ser visualmente idênticas para sempre, e a única
+ * diferença permitida entre elas é a mensagem que abre no WhatsApp.
+ *
+ * Toda alteração de layout ou copy feita aqui vale automaticamente para as
+ * duas. Nunca duplicar esta página para customizar uma das rotas.
+ */
+interface ImplantesProps {
+  /** Define a mensagem pré-preenchida do WhatsApp em todos os CTAs da página. */
+  origin?: WhatsAppOrigin;
+  /** Metadados da rota. O espelho de anúncios usa canonical e noindex próprios. */
+  seo?: typeof SEO.implantes | typeof SEO.implantesAds;
+}
+
+const Implantes = ({ origin = IMPLANTES.origin, seo = SEO.implantes }: ImplantesProps) => {
   useReveal();
   useHashScroll();
 
+  /*
+   * As seções montam o link do WhatsApp a partir de `content.origin`. Trocar a
+   * origin no conteúdo, e não seção por seção, garante que TODOS os CTAs da
+   * página sigam a rota: nenhum botão fica com a mensagem da outra.
+   */
+  const content = origin === IMPLANTES.origin ? IMPLANTES : { ...IMPLANTES, origin };
+
   return (
   <>
-    <Seo {...SEO.implantes} jsonLd={jsonLd} />
-    <Navbar origin={IMPLANTES.origin} />
+    <Seo {...seo} jsonLd={jsonLd} />
+    <Navbar origin={origin} />
     <main>
       {/*
         Hero em teste com foto real. A versão com a arte abstrata da marca fica
@@ -107,7 +131,7 @@ const Implantes = () => {
         direita, para o rosto e a radiografia não ficarem sob o texto.
       */}
       <Hero
-        content={IMPLANTES}
+        content={content}
         image={raioXPhoto}
         /*
          * A imagem ocupa os 70% da direita; os 30% da esquerda ficam no grafite
@@ -151,14 +175,14 @@ const Implantes = () => {
       />
       {/* Reserva, com a arte abstrata:
       <Hero
-        content={IMPLANTES}
+        content={content}
         image={heroArt}
         secondary={{ label: "Como funciona o tratamento", targetId: "como-funciona" }}
       />
       */}
-      <Audience content={IMPLANTES} id="para-quem" />
+      <Audience content={content} id="para-quem" />
       <Explainer
-        content={IMPLANTES}
+        content={content}
         image={sorrisoPhoto}
         alt="Prótese fixa sobre implantes instalada na arcada superior, vista de perfil com os dentes em oclusão"
         /*
@@ -184,7 +208,7 @@ const Implantes = () => {
         imageClassName="size-full object-cover object-[60%_35%] [--zoom:1.15] lg:object-[100%_35%] lg:[--shift:8%] lg:[--zoom:1.2]"
       />
       <Process
-        content={IMPLANTES}
+        content={content}
         id="como-funciona"
         cta={{ label: "Tirar uma dúvida no WhatsApp" }}
       />
@@ -216,8 +240,8 @@ const Implantes = () => {
         disclaimer={RESULTS_DISCLAIMER}
         title={"**Casos** da clínica"}
         intro="Casos tratados na clínica, publicados com autorização das pacientes."
-        cases={IMPLANTES.cases}
-        cta={{ label: "Quero saber se é possível no meu caso", origin: IMPLANTES.origin }}
+        cases={content.cases}
+        cta={{ label: "Quero saber se é possível no meu caso", origin: content.origin }}
       />
       <Testimonials
         id="depoimentos"
@@ -226,9 +250,9 @@ const Implantes = () => {
         source={TESTIMONIALS_SOURCE}
         intro="Avaliações públicas de quem já foi atendido na clínica."
       />
-      <Investment content={IMPLANTES} id="investimento" />
+      <Investment content={content} id="investimento" />
       <Benefits
-        content={IMPLANTES}
+        content={content}
         id="a-clinica"
         image={clinicaPhoto}
         alt={`Equipe da ${CLINIC.name} na recepção da clínica em ${CLINIC.city}`}
@@ -236,19 +260,19 @@ const Implantes = () => {
            ponto de foco desce para a altura da equipe. */
         imageClassName="size-full object-cover object-[100%_62%]"
       />
-      <CtaButton origin={IMPLANTES.origin} label="Pedir a avaliação do meu caso" />
+      <CtaButton origin={content.origin} label="Pedir a avaliação do meu caso" />
       {/* `#faq` é o alvo declarado no JSON-LD acima: o rich result de FAQ no
           Google leva direto para esta seção. */}
-      <Faq content={IMPLANTES} id="faq" />
+      <Faq content={content} id="faq" />
       <FinalCta
-        content={IMPLANTES}
+        content={content}
         image={protesePhoto}
         alt="Prótese fixa sobre implantes pronta, antes da instalação"
       />
     </main>
-    <Footer origin={IMPLANTES.origin} />
+    <Footer origin={content.origin} />
     {/* Botão flutuante desativado a pedido. Para reativar, descomentar:
-    <WhatsAppFab origin={IMPLANTES.origin} /> */}
+    <WhatsAppFab origin={content.origin} /> */}
     </>
   );
 };

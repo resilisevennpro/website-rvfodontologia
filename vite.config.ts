@@ -31,7 +31,10 @@ export default defineConfig(({ mode }) => ({
         /* As landings entram aqui porque a descoberta automática segue `href`,
            e a home navega por `<Link>` do React Router. Rota nova precisa ser
            adicionada nesta lista para ser pré-renderizada. */
-        additionalPrerenderRoutes: ["/lentes", "/implantes"],
+        /* `/implantes/ads` é a mesma landing servida ao tráfego pago. Entra no
+           pré-render como as demais (o anúncio precisa de HTML pronto), mas fica
+           fora do sitemap: é noindex, com canonical para /implantes. */
+        additionalPrerenderRoutes: ["/lentes", "/implantes", "/implantes/ads"],
       }),
   ].filter(Boolean),
   build: {

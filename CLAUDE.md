@@ -18,6 +18,22 @@
 - Pendências reais ficam marcadas com `TODO:` no arquivo de conteúdo, nunca preenchidas
   com dado inventado.
 
+## Rotas espelho de anúncio
+
+`/implantes` e `/implantes/ads` são **a mesma página**, servida em duas rotas. A `/ads`
+é a landing dos anúncios do Google; a única diferença permitida entre elas é a mensagem
+que abre no WhatsApp, que é como a clínica separa quem veio do anúncio de quem veio do
+orgânico.
+
+- As duas rotas renderizam `src/pages/Implantes.tsx`, que recebe `origin` e `seo` como
+  props. Qualquer alteração de layout ou copy feita ali já vale para as duas.
+- **Nunca duplicar a página** para customizar uma das rotas. Se algo precisar mudar só
+  na `/ads`, avisar antes: por definição, elas ficam visualmente idênticas.
+- A `/ads` é `noindex` com canonical para `/implantes` e fica **fora do sitemap**. Não é
+  página de SEO, é destino de anúncio, e indexá-la faria as duas competirem na busca.
+- Novas rotas espelho precisam ser registradas em `MIRRORS`, em `Navbar.tsx`, senão o
+  menu não reconhece a página atual.
+
 ## Publicidade odontológica (CFO)
 
 A copy do site é regulada. Ao editar textos, manter:

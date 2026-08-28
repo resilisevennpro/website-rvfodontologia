@@ -87,6 +87,11 @@ export const WHATSAPP_MESSAGES = {
      deles aqui estreitaria a conversa antes da avaliação. */
   lentes: "Olá! Vim pelo site e gostaria de saber mais sobre lentes.",
   implantes: "Olá! Vim pelo site e gostaria de saber mais sobre implantes.",
+  /* Mesma landing de implantes, servida em /implantes/ads para o tráfego pago.
+     A mensagem diferente é o que permite separar, no WhatsApp, quem veio do
+     anúncio de quem veio da busca orgânica. Ao mexer aqui, lembrar que é isso
+     que a clínica usa para medir a campanha. */
+  implantesAds: "Olá, vim pelo anúncio de implantes no google e gostaria de mais informações.",
   clinicoGeral: "Olá! Vim pelo site e gostaria de agendar uma consulta de clínico geral.",
   protese: "Olá! Vim pelo site e gostaria de saber mais sobre próteses.",
   canal: "Olá! Vim pelo site e gostaria de saber mais sobre tratamento de canal.",
@@ -156,5 +161,18 @@ export const SEO = {
     description:
       "Implantes dentários em Içara-SC. Planejamento individualizado para recuperar mastigação, estética e segurança. Agende sua avaliação.",
     path: "/implantes",
+  },
+  /*
+   * Espelho de /implantes servido em /implantes/ads, só para o tráfego pago.
+   * O conteúdo é o mesmo, então a página não entra no índice e o canonical
+   * aponta para a original: sem isso as duas competiriam entre si na busca.
+   */
+  implantesAds: {
+    title: `Implantes Dentários em ${CLINIC.city} | ${CLINIC.name}`,
+    description:
+      "Implantes dentários em Içara-SC. Planejamento individualizado para recuperar mastigação, estética e segurança. Agende sua avaliação.",
+    path: "/implantes/ads",
+    canonicalPath: "/implantes",
+    noindex: true,
   },
 } as const;

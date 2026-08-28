@@ -5,6 +5,14 @@ interface SeoProps {
   title: string;
   description: string;
   path: string;
+  /**
+   * Canonical diferente da própria rota. Usado por páginas espelho (como
+   * /implantes/ads), que repetem o conteúdo de uma landing e precisam creditar
+   * a original em vez de disputar a mesma busca com ela.
+   */
+  canonicalPath?: string;
+  /** Mantém a rota fora do índice. Anda junto do `canonicalPath` nos espelhos. */
+  noindex?: boolean;
   /** JSON-LD específico da página, injetado como <script type="application/ld+json">. */
   jsonLd?: Record<string, unknown>;
 }
@@ -25,9 +33,10 @@ function upsertMeta(selector: string, attr: "name" | "property", key: string, co
  * Centraliza o que antes vivia duplicado entre index.html e os useEffect das
  * páginas — com múltiplas rotas, essa duplicação divergiria.
  */
-export function Seo({ title, description, path, jsonLd }: SeoProps) {
+export function Seo({ title, description, path, canonicalPath, noindex, jsonLd }: SeoProps) {
   useEffect(() => {
     const url = `${CLINIC.domain}${path}`;
+    const canonicalUrl = `${CLINIC.domain}${canonicalPath ?? path}`;
 
     document.title = title;
     upsertMeta('meta[name="description"]', "name", "description", description);
@@ -46,8 +55,17 @@ export function Seo({ title, description, path, jsonLd }: SeoProps) {
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = url;
-  }, [title, description, path]);
+    canonical.href = canonicalUrl;
+
+    /* Sempre reafirma a diretiva: quem navega de /implantes/ads para outra
+       rota levaria o `noindex` junto se aqui só criássemos a tag. */
+    upsertMeta(
+      'meta[name="robots"]',
+      "name",
+      "robots",
+      noindex ? "noindex, follow" : "index, follow",
+    );
+  }, [title, description, path, canonicalPath, noindex]);
 
   useEffect(() => {
     if (!jsonLd) return;

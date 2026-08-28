@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { SEO } from "./content/site";
 /*
  * Uma rota, um chunk: quem abre /implantes não baixa o código da home nem o de
  * lentes. Antes tudo vinha num arquivo só.
@@ -35,6 +36,16 @@ const App = () => (
         <Route path="/" element={<Index />} />
         <Route path="/lentes" element={<Lentes />} />
         <Route path="/implantes" element={<Implantes />} />
+        {/*
+         * Mesma página de implantes, servida para o tráfego pago. Só a mensagem
+         * do WhatsApp muda, para a clínica separar quem veio do anúncio de quem
+         * veio da busca. Como é o mesmo componente, as duas rotas nunca podem
+         * divergir visualmente.
+         */}
+        <Route
+          path="/implantes/ads"
+          element={<Implantes origin="implantesAds" seo={SEO.implantesAds} />}
+        />
         {/* Novas rotas sempre acima do catch-all "*" */}
         <Route path="*" element={<NotFound />} />
       </Routes>

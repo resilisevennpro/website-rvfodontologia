@@ -19,10 +19,21 @@ const TREATMENTS = [
  * A landing atual não se autolinka nem oferece a landing irmã: no lugar dela
  * entra "Início", devolvendo o visitante à árvore de links.
  */
+/**
+ * Rotas espelho: a landing servida ao tráfego pago é a mesma página, então a
+ * navbar precisa se comportar como na original. O link da própria página
+ * aponta para o espelho, e não para `/implantes`, para quem veio do anúncio
+ * não ser jogado na versão orgânica (com a outra mensagem de WhatsApp).
+ */
+const MIRRORS: Record<string, string> = {
+  "/implantes/ads": "/implantes",
+};
+
 function linksFor(pathname: string) {
-  const current = TREATMENTS.find((t) => t.to === pathname);
+  const canonical = MIRRORS[pathname] ?? pathname;
+  const current = TREATMENTS.find((t) => t.to === canonical);
   if (!current) return TREATMENTS;
-  return [{ label: "Início", to: "/" }, current];
+  return [{ label: "Início", to: "/" }, { ...current, to: pathname }];
 }
 
 export function Navbar({ origin }: { origin: WhatsAppOrigin }) {

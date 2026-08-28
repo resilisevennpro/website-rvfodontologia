@@ -57,6 +57,23 @@ const ROUTE_META = {
       breadcrumbSchema("/implantes", "Implantes"),
     ),
   },
+  /* O espelho de anúncios repete o schema da original de propósito: é a mesma
+     clínica e o mesmo serviço. O que o mantém fora do índice é o `noindex` e o
+     canonical de `SEO.implantesAds`. */
+  "/implantes/ads": {
+    ...SEO.implantesAds,
+    jsonLd: graph(
+      clinicSchema,
+      serviceSchema({
+        path: "/implantes",
+        name: "Implantes dentários",
+        description: SEO.implantes.description,
+        procedureType: "https://schema.org/SurgicalProcedure",
+      }),
+      faqSchema("/implantes", IMPLANTES.faq.items),
+      breadcrumbSchema("/implantes", "Implantes"),
+    ),
+  },
 } as const;
 
 /*
@@ -76,6 +93,8 @@ const LCP_POR_ROTA: Record<string, { base: string; larguras: number[] }> = {
   "/": { base: "/img/hero-equipe", larguras: [640, 1024] },
   "/lentes": { base: "/img/dr-vinicius-01", larguras: [640, 1024, 1600] },
   "/implantes": { base: "/img/dr-vinicius-02", larguras: [640, 1024, 1600] },
+  /* Mesmo hero da original: é a mesma página. */
+  "/implantes/ads": { base: "/img/dr-vinicius-02", larguras: [640, 1024, 1600] },
 };
 
 const HERO_SIZES = "(min-width: 1024px) 70vw, 100vw";
@@ -114,6 +133,10 @@ export async function prerender({ url }: { url: string }) {
         <Route path="/" element={<Index />} />
         <Route path="/lentes" element={<Lentes />} />
         <Route path="/implantes" element={<Implantes />} />
+        <Route
+          path="/implantes/ads"
+          element={<Implantes origin="implantesAds" seo={SEO.implantesAds} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </StaticRouter>,
@@ -122,7 +145,11 @@ export async function prerender({ url }: { url: string }) {
   const meta = ROUTE_META[url as keyof typeof ROUTE_META];
   if (!meta) return { html };
 
-  const canonical = `${CLINIC.domain}${meta.path}`;
+  /* Páginas espelho (ex.: /implantes/ads) creditam a landing original em vez
+     de disputarem a mesma busca com ela. */
+  const canonicalPath = "canonicalPath" in meta ? meta.canonicalPath : meta.path;
+  const canonical = `${CLINIC.domain}${canonicalPath}`;
+  const noindex = "noindex" in meta && meta.noindex;
   const ogImage = OG_IMAGE;
 
   return {
@@ -132,6 +159,13 @@ export async function prerender({ url }: { url: string }) {
       title: meta.title,
       elements: new Set([
         ...preloadLcp(url),
+        {
+          type: "meta",
+          props: {
+            name: "robots",
+            content: noindex ? "noindex, follow" : "index, follow",
+          },
+        },
         { type: "meta", props: { name: "description", content: meta.description } },
         { type: "link", props: { rel: "canonical", href: canonical } },
         { type: "meta", props: { property: "og:title", content: meta.title } },

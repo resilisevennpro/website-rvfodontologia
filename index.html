@@ -63,7 +63,11 @@
     -->
     <title>RVF Odontologia Estética | Içara – SC</title>
     <meta name="author" content="RVF Odontologia Estética" />
-    <meta name="robots" content="index, follow" />
+    <!--
+      `robots` saiu daqui e passou a ser emitido por rota no `prerender.tsx`.
+      Estático, ele valia para o site inteiro e as páginas espelho de anúncio
+      (/implantes/ads) acabavam com duas diretivas contraditórias no `<head>`.
+    -->
     <meta name="theme-color" content="#727272" />
     <meta name="geo.region" content="BR-SC" />
     <meta name="geo.placename" content="Içara" />
