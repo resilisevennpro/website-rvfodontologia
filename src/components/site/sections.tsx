@@ -1289,7 +1289,11 @@ export function BeforeAfter({
         <Foto
           src={item.combined}
           alt={`${item.shortLabel ?? item.label}, antes e depois do tratamento`}
-          className="w-full rounded-lg"
+          /* Proporção fixa (a do primeiro arquivo desta série) para os cards
+             ficarem com a mesma altura mesmo quando o arquivo combinado vem
+             num enquadramento diferente. Sem isso, uma foto mais alta ou mais
+             estreita que as outras esticava só o próprio card. */
+          className="aspect-[4/5] w-full rounded-lg object-cover"
           sizes="(min-width: 1024px) 33vw, 100vw"
         />
       ) : (

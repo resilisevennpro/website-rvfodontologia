@@ -86,13 +86,14 @@ export const LENTES: LandingContent = {
   cases: [
     {
       label:
-        /* "Muitas pessoas" mantém o comportamento no genérico. O que se afirma
-           do caso é o que foi feito (alinhar, uniformizar o tom) e a harmonia,
-           que é aparência: dizer que o tratamento traz confiança à paciente
-           seria promessa de resultado atrelada à imagem. */
-        "Muitas pessoas evitam sorrir em fotos. Neste caso, de dentes escurecidos e com espaçamentos, alinhamos e uniformizamos em um tom mais claro para trazer harmonia ao sorriso.",
-      shortLabel: "Reabilitação da arcada superior com lentes",
-      combined: "/antes-depois-insta-1.jpg",
+        /* Fala de autoestima como motivação geral de quem procura, no plural, e
+           não como resultado obtido pela paciente da foto: atribuir o ganho ao
+           caso exibido seria promessa de resultado atrelada a imagem. */
+        "Autoestima e confiança ao sorrir estão entre os motivos que mais trazem pacientes até aqui. O planejamento parte disso, antes de qualquer procedimento.",
+      shortLabel: "Arcada superior reabilitada com lentes",
+      /* O arquivo já traz o antes e o depois empilhados, então entra inteiro
+         no card, sem a grade de dois quadros. */
+      combined: "/antes-depois-lentes-4.png",
     },
     {
       label:
@@ -102,14 +103,13 @@ export const LENTES: LandingContent = {
     },
     {
       label:
-        /* Fala de autoestima como motivação geral de quem procura, no plural, e
-           não como resultado obtido pela paciente da foto: atribuir o ganho ao
-           caso exibido seria promessa de resultado atrelada a imagem. */
-        "Autoestima e confiança ao sorrir estão entre os motivos que mais trazem pacientes até aqui. O planejamento parte disso, antes de qualquer procedimento.",
-      shortLabel: "Arcada superior reabilitada com lentes",
-      /* O arquivo já traz o antes e o depois empilhados, então entra inteiro
-         no card, sem a grade de dois quadros. */
-      combined: "/antes-depois-lentes-3.png",
+        /* "Muitas pessoas" mantém o comportamento no genérico. O que se afirma
+           do caso é o que foi feito (alinhar, uniformizar o tom) e a harmonia,
+           que é aparência: dizer que o tratamento traz confiança à paciente
+           seria promessa de resultado atrelada à imagem. */
+        "Muitas pessoas evitam sorrir em fotos. Neste caso, de dentes escurecidos e com espaçamentos, alinhamos e uniformizamos em um tom mais claro para trazer harmonia ao sorriso.",
+      shortLabel: "Reabilitação da arcada superior com lentes",
+      combined: "/antes-depois-insta-1.jpg",
     },
   ],
 

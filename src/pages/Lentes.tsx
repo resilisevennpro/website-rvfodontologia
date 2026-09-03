@@ -130,7 +130,11 @@ const Lentes = () => {
       <BeforeAfter
         disclaimer={RESULTS_DISCLAIMER}
         id="casos"
-        intro="Casos tratados na clínica, publicados com autorização das pacientes."
+        /* Nem todo caso foi tratado dentro da clínica atual: alguns são de
+           antes dela, feitos pelo mesmo profissional em outro endereço. Por
+           isso o título credita o Dr. Vinicius, não "a clínica". */
+        title={`**Casos** do ${CLINIC.responsibleTechnician}`}
+        intro={`Casos tratados pelo ${CLINIC.responsibleTechnician}, publicados com autorização das pacientes.`}
         cases={LENTES.cases}
         cta={{ label: "Quero transformar o meu sorriso", origin: LENTES.origin }}
       />
