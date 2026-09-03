@@ -10,6 +10,7 @@ import { clinicSchema } from "./content/schema";
 import { faqSchema, serviceSchema, breadcrumbSchema, graph } from "./content/schema";
 import { LENTES } from "./content/lentes";
 import { IMPLANTES } from "./content/implantes";
+import { DR_VINICIUS_LINKS } from "./content/home";
 
 /**
  * Entrada de pré-renderização, usada só no build.
@@ -28,6 +29,12 @@ import { IMPLANTES } from "./content/implantes";
 const ROUTE_META = {
   "/": {
     ...SEO.home,
+    jsonLd: clinicSchema,
+  },
+  /* Bio pessoal do Dr. Vinicius: mesma entidade da clínica, sem serviço
+     específico para citar no schema. */
+  "/drvinicius": {
+    ...SEO.drVinicius,
     jsonLd: clinicSchema,
   },
   "/lentes": {
@@ -91,6 +98,7 @@ const ROUTE_META = {
  */
 const LCP_POR_ROTA: Record<string, { base: string; larguras: number[] }> = {
   "/": { base: "/img/hero-equipe", larguras: [640, 1024] },
+  "/drvinicius": { base: "/img/dr-vinicius-01", larguras: [640, 1024, 1600] },
   "/lentes": { base: "/img/dr-vinicius-01", larguras: [640, 1024, 1600] },
   "/implantes": { base: "/img/dr-vinicius-02", larguras: [640, 1024, 1600] },
   /* Mesmo hero da original: é a mesma página. */
@@ -98,8 +106,10 @@ const LCP_POR_ROTA: Record<string, { base: string; larguras: number[] }> = {
 };
 
 const HERO_SIZES = "(min-width: 1024px) 70vw, 100vw";
-/* A home é grid de 2 colunas no desktop, não hero de 70%. */
+/* A home, e a variante /drvinicius que reusa o mesmo layout, são grid de 2
+   colunas no desktop, não hero de 70%. */
 const HOME_SIZES = "(min-width: 1024px) 50vw, 100vw";
+const HOME_LAYOUT_ROUTES = new Set(["/", "/drvinicius"]);
 
 function preloadLcp(url: string) {
   const lcp = LCP_POR_ROTA[url];
@@ -112,7 +122,7 @@ function preloadLcp(url: string) {
         as: "image",
         type: "image/webp",
         imagesrcset: lcp.larguras.map((l) => `${lcp.base}-${l}.webp ${l}w`).join(", "),
-        imagesizes: url === "/" ? HOME_SIZES : HERO_SIZES,
+        imagesizes: HOME_LAYOUT_ROUTES.has(url) ? HOME_SIZES : HERO_SIZES,
         fetchpriority: "high",
       },
     },
@@ -131,6 +141,21 @@ export async function prerender({ url }: { url: string }) {
     <StaticRouter location={url}>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route
+          path="/drvinicius"
+          element={
+            <Index
+              image="/dr-vinicius-01.jpeg"
+              imageAlt={CLINIC.responsibleTechnician}
+              links={DR_VINICIUS_LINKS}
+              seo={SEO.drVinicius}
+              showWhatsAppCta={false}
+              displayName={CLINIC.responsibleTechnician}
+              instagramUrl="https://www.instagram.com/dr.viniciussrodrigues/"
+              instagramHandle="@dr.viniciussrodrigues"
+            />
+          }
+        />
         <Route path="/lentes" element={<Lentes />} />
         <Route path="/implantes" element={<Implantes />} />
         <Route
@@ -179,7 +204,13 @@ export async function prerender({ url }: { url: string }) {
         { type: "meta", props: { property: "og:image:height", content: "630" } },
         {
           type: "meta",
-          props: { property: "og:image:alt", content: `Equipe da ${CLINIC.name}` },
+          props: {
+            property: "og:image:alt",
+            content:
+              url === "/drvinicius"
+                ? CLINIC.responsibleTechnician
+                : `Equipe da ${CLINIC.name}`,
+          },
         },
         { type: "meta", props: { name: "twitter:title", content: meta.title } },
         { type: "meta", props: { name: "twitter:description", content: meta.description } },

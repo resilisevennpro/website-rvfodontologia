@@ -54,3 +54,22 @@ export const HOME_LINKS: HomeLink[] = [
     external: true,
   },
 ];
+
+/**
+ * Árvore de links da página do Dr. Vinicius (`/drvinicius`), variante da home
+ * usada como destino de bio/anúncio pessoal do profissional.
+ *
+ * Só os serviços com landing própria: os que vão direto ao WhatsApp genérico
+ * (Próteses, Canal, Clínico Geral) não fazem sentido aqui. "Onde Estamos" vira
+ * "Localização", sem o hint de bairro — mais curto para a lista menor.
+ */
+export const DR_VINICIUS_LINKS: HomeLink[] = [
+  HOME_LINKS[0],
+  HOME_LINKS[1],
+  {
+    label: "Localização",
+    hint: `${CLINIC.address.district} – ${CLINIC.city}, ${CLINIC.state}`,
+    href: SOCIAL.maps,
+    external: true,
+  },
+];

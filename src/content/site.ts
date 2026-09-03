@@ -175,4 +175,15 @@ export const SEO = {
     canonicalPath: "/implantes",
     noindex: true,
   },
+  /*
+   * Variante da home como bio pessoal do Dr. Vinicius: foto e links próprios,
+   * indexada normalmente (diferente do espelho de /implantes/ads, que é
+   * conteúdo idêntico e por isso fica fora de busca).
+   */
+  drVinicius: {
+    title: `${CLINIC.responsibleTechnician} | ${CLINIC.name}`,
+    description:
+      `Conheça o trabalho do ${CLINIC.responsibleTechnician} em lentes e implantes na ${CLINIC.name}, em ${CLINIC.city}-${CLINIC.state}. Agende sua avaliação.`,
+    path: "/drvinicius",
+  },
 } as const;

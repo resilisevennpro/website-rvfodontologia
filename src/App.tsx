@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { SEO } from "./content/site";
+import { CLINIC, SEO } from "./content/site";
+import { DR_VINICIUS_LINKS } from "./content/home";
 /*
  * Uma rota, um chunk: quem abre /implantes não baixa o código da home nem o de
  * lentes. Antes tudo vinha num arquivo só.
@@ -34,6 +35,26 @@ const App = () => (
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<Index />} />
+        {/*
+         * Variante da home como bio pessoal do Dr. Vinicius: mesma estrutura,
+         * com a foto dele, só os links de serviço com landing própria e
+         * "Localização" no lugar de "Onde Estamos".
+         */}
+        <Route
+          path="/drvinicius"
+          element={
+            <Index
+              image="/dr-vinicius-01.jpeg"
+              imageAlt={CLINIC.responsibleTechnician}
+              links={DR_VINICIUS_LINKS}
+              seo={SEO.drVinicius}
+              showWhatsAppCta={false}
+              displayName={CLINIC.responsibleTechnician}
+              instagramUrl="https://www.instagram.com/dr.viniciussrodrigues/"
+              instagramHandle="@dr.viniciussrodrigues"
+            />
+          }
+        />
         <Route path="/lentes" element={<Lentes />} />
         <Route path="/implantes" element={<Implantes />} />
         {/*

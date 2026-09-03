@@ -34,6 +34,21 @@ orgânico.
 - Novas rotas espelho precisam ser registradas em `MIRRORS`, em `Navbar.tsx`, senão o
   menu não reconhece a página atual.
 
+## /drvinicius (bio pessoal)
+
+`/drvinicius` reusa `src/pages/Index.tsx` (a home), recebendo `image`, `imageAlt`,
+`links` e `seo` como props — mesmo padrão de `Implantes.tsx`. Diferente do espelho de
+anúncio, aqui o conteúdo **não** é idêntico ao original de propósito: é a home
+adaptada para bio pessoal do Dr. Vinicius.
+
+- Foto: `dr-vinicius-01.jpeg` (a mesma do hero de `/lentes`).
+- Links: `DR_VINICIUS_LINKS` em `src/content/home.ts` — só os serviços com landing
+  própria (Lentes, Implantes) mais "Localização". Sem Próteses/Canal/Clínico Geral,
+  que na home vão direto ao WhatsApp genérico.
+- É indexada normalmente (`SEO.drVinicius`, sem `noindex`/canonical alternativo) e
+  entra no sitemap — decisão explícita do cliente, ao contrário de `/implantes/ads`.
+- Alteração de layout/estrutura em `Index.tsx` vale para as duas rotas.
+
 ## Publicidade odontológica (CFO)
 
 A copy do site é regulada. Ao editar textos, manter:
